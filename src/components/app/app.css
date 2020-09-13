@@ -1,0 +1,14 @@
+@import '~antd/dist/antd.css';
+
+
+.site-card-wrapper {
+    max-width: 1600px;
+    min-height: 100%;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.pagination-box-wrapper {
+    margin: 20px auto;
+    margin-top: 0;
+}
