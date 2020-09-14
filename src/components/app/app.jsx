@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import './app.css';
-import { Layout } from 'antd';
+import {Col, Layout, PageHeader, Row, Tabs} from 'antd';
 import MoviesList from '../movies-list';
 import Header from '../header';
 import PaginationBox from '../pagination-box';
 import ErrorBoundry from '../error-boundry';
 import MovieDbService from '../../services/movie-db-service';
 import {MovieDBServiceProvider} from "../context";
+
+const { TabPane } = Tabs;
 
 export default class App extends Component{
 
@@ -41,19 +43,37 @@ export default class App extends Component{
 
         const { genresList, service, keyWord } = this.state;
 
+        const title = keyWord ? '' : 'Top Rated Movies'
+
         return (
             <MovieDBServiceProvider value={ [ genresList, service ] }>
                 <ErrorBoundry>
-                    <Layout>
-                        <Header onSearch={this.onSearch}/>
-                    </Layout>
-                    <Layout>
-                        <div className='site-card-wrapper'>
-                            <MoviesList keyWord={keyWord}/>
-                        </div>
-                        <div className='pagination-box-wrapper'>
-                            <PaginationBox />
-                        </div>
+                    <Layout className='content-wrapper'
+                            style={{backgroundColor:'white'}}>
+
+                        <PageHeader title=''
+                                    className='content-header'>
+
+                            <Tabs>
+                                <TabPane tab='Search' key="1" />
+                                <TabPane tab='Rated' key="2" />
+                            </Tabs>
+
+                        </PageHeader>
+
+                        <Row gutter={[16, 32]}
+                             justify='center'>
+                            <Col span={16} style={{padding:0}}>
+                                <Header onSearch={this.onSearch}/>
+                            </Col>
+                        </Row>
+
+                        <h1 style={{textAlign:'center', color:'darkgray'}}>{title}</h1>
+
+                        <MoviesList keyWord={keyWord}/>
+
+                        <PaginationBox />
+
                     </Layout>
                 </ErrorBoundry>
             </MovieDBServiceProvider>

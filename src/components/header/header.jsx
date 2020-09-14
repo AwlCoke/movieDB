@@ -4,7 +4,9 @@ import SearchPanel from '../search-panel';
 
 const Header = ({onSearch}) => {
     return (
-        < SearchPanel onSearch={onSearch}/>
+        <div className='search-panel-box'>
+            <SearchPanel onSearch={onSearch} />
+        </div>
     )
 }
 

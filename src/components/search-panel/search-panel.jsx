@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {Input} from "antd";
+import {Form, Input} from "antd";
 import debounce from 'lodash.debounce';
 import MovieDbService from '../../services/movie-db-service';
 
@@ -39,13 +39,14 @@ export default class SearchPanel extends Component {
     render() {
         const {query} = this.state;
         return (
-            <form onSubmit={this.onSubmit}>
-
+            <Form onSubmit={this.onSubmit}>
                 <Input placeholder='Type to search...'
                        value={query}
                        onChange={this.onChange}
+                       size='large'
+
                 />
-            </form>
+            </Form>
         )
     }
 }

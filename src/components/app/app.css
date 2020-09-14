@@ -1,11 +1,21 @@
 @import '~antd/dist/antd.css';
 
+body, html {
+    padding: 0;
+    margin: 0;
+    background: #f0f2f5;
+}
 
-.site-card-wrapper {
-    max-width: 1600px;
+.content-wrapper {
+    max-width: 1440px;
     min-height: 100%;
     margin: 0 auto;
-    padding: 30px;
+    display: flex;
+}
+
+.content-header {
+    display: flex;
+    justify-content: center;
 }
 
 .pagination-box-wrapper {

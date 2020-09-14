@@ -10,7 +10,8 @@ export default class PaginationBox extends Component {
     render() {
         const {currentPage, totalPages} = this.state;
         return (
-            <Pagination defaultCurrent={currentPage}
+            <Pagination className='pagination-box-wrapper'
+                        defaultCurrent={currentPage}
                         total={totalPages}/>
         )
     }

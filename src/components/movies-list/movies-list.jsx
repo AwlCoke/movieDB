@@ -64,7 +64,7 @@ export default class MoviesList extends Component {
         const movies = this.renderMovies(moviesList);
         return (
             <ErrorBoundry>
-                <Row gutter={[32, 32]}>
+                <Row gutter={[32, 32]} justify='center'>
                     {movies}
                 </Row>
             </ErrorBoundry>
