@@ -7,12 +7,11 @@ const ErrorIndicator = () => {
 
     return (
         <Row className="error-indicator" justify='center'>
-            <Col>
-                <img src={logo} alt="error icon"/>
-            </Col>
+            {/*<Col>*/}
+            {/*    <img src={logo} alt="error icon"/>*/}
+            {/*</Col>*/}
             <Alert message='Oops!'
                    description='Something has gone wrong.
-                               But there is no need to be upset.
                                We are already working on it'
                    type='warning'/>
         </Row>
