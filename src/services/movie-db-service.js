@@ -45,10 +45,12 @@ export default class MovieDbService {
     }
 
     transformMovie = (movie) => {
+        const url = movie.poster_path ?
+            `https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}` : null;
         return {
             id: movie.id,
             title: movie.title,
-            posterUrl: `https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}`,
+            posterUrl: url,
             description: movie.overview,
             votes: movie.vote_average,
             releaseDate: movie.release_date,

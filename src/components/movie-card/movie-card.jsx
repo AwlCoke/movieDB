@@ -4,7 +4,7 @@ import {Button, Card, Rate, Empty} from 'antd';
 import { format } from 'date-fns';
 import './movie-card.css';
 import Spinner from "../spinner";
-import {checkURL} from "../hoc-helpers";
+import {checkURL, checkDate, formatDate} from "../hoc-helpers";
 
 
 export default class MovieCard extends Component {
@@ -51,14 +51,12 @@ export default class MovieCard extends Component {
 
         const shorly = this.shorten(description, 150);
 
-        const checkData = (new Date(releaseDate) instanceof Date);
+        const date = formatDate(releaseDate);
 
-        const date = checkData ? format(new Date(releaseDate), 'do MMMM yyyy') : '';
-
-        const poster = checkURL(posterUrl) ? (<img className='poster'
+        const poster = posterUrl ? (<img className='poster'
                                              src={ posterUrl }
                                              alt={ `poster of ${title}` }/>)
-                                            : (<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />);
+                                            : (<Empty image={Empty.PRESENTED_IMAGE_SIMPLE}style={{width:200}}/>);
 
         const { Meta } = Card;
 
