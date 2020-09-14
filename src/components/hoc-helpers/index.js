@@ -1,3 +1,7 @@
 import withMovieDbService from "./with-movie-db-service";
+import checkURL from "./checkURL";
 
-export default withMovieDbService;
+export {
+    withMovieDbService,
+    checkURL,
+};

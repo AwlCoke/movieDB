@@ -27,16 +27,16 @@ export default class MoviesList extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        const {keyWord} = this.props
-        if (keyWord !== prevProps.keyWord) {
+        const {keyWord, currentPage} = this.props
+        if (keyWord !== prevProps.keyWord || currentPage !== prevProps.currentPage) {
             this.updateList();
         }
     }
 
     updateList () {
-        const {keyWord} = this.props;
+        const {keyWord, currentPage} = this.props;
         this.movieDBService
-            .getMovies(keyWord)
+            .getMovies(keyWord, currentPage)
             .then(moviesList => {
                 this.setState({ moviesList })
             });

@@ -5,7 +5,7 @@ export default class MovieDbService {
     apiKey = '5c49318cf30b5f1de695245fd0a13af9';
 
 
-    getResource = async(url, pageNumber=1) => {
+    getResource = async(url, pageNumber) => {
 
         let res = await fetch(`${this.apiBase}/3/search/movie?api_key=${this.apiKey}&query=${url}&page=${pageNumber}`);
 
@@ -40,6 +40,7 @@ export default class MovieDbService {
         let res;
         if (keyword) res = await this.getResource(`/${keyword}/`);
         else res = await this.getTopRatedMovies();
+        console.log(res);
         return res.results.map(this.transformMovie);
     }
 

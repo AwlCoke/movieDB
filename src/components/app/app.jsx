@@ -15,7 +15,8 @@ export default class App extends Component{
     state = {
         genresList: [],
         service: new MovieDbService,
-        keyWord: ''
+        keyWord: '',
+        currentPage: 2
     }
 
     componentDidMount() {
@@ -39,14 +40,20 @@ export default class App extends Component{
         });
     }
 
+    changePage = (pageNumber) => {
+        this.setState({
+            currentPage: pageNumber
+        })
+    }
+
     render() {
 
-        const { genresList, service, keyWord } = this.state;
+        const { genresList, service, keyWord, currentPage } = this.state;
 
         const title = keyWord ? '' : 'Top Rated Movies'
 
         return (
-            <MovieDBServiceProvider value={ [ genresList, service ] }>
+            <MovieDBServiceProvider value={ [ genresList, service, currentPage ] }>
                 <ErrorBoundry>
                     <Layout className='content-wrapper'
                             style={{backgroundColor:'white'}}>
@@ -70,9 +77,9 @@ export default class App extends Component{
 
                         <h1 style={{textAlign:'center', color:'darkgray'}}>{title}</h1>
 
-                        <MoviesList keyWord={keyWord}/>
+                        <MoviesList keyWord={keyWord} currentPage={currentPage}/>
 
-                        <PaginationBox />
+                        <PaginationBox currentPage={currentPage} onChange={this.changePage}/>
 
                     </Layout>
                 </ErrorBoundry>
