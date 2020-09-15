@@ -2,10 +2,6 @@ import React, {Component} from 'react';
 import {Pagination} from 'antd';
 
 export default class PaginationBox extends Component {
-    state = {
-        // currentPage: this.props.currentPage,
-        totalPages: 50
-    }
 
     onChange = (page) => {
         console.log(page)
@@ -17,8 +13,7 @@ export default class PaginationBox extends Component {
     }
 
     render() {
-        const {totalPages } = this.state;
-        const { currentPage } = this.props;
+        const { currentPage, totalPages } = this.props;
         return (
             <Pagination className='pagination-box-wrapper'
                         onChange={this.onChange}

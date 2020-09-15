@@ -16,7 +16,8 @@ export default class App extends Component{
         genresList: [],
         service: new MovieDbService,
         keyWord: '',
-        currentPage: 1
+        currentPage: 1,
+        totalPages: 50
     }
 
     componentDidMount() {
@@ -36,7 +37,8 @@ export default class App extends Component{
 
     onSearch = (value) => {
         this.setState({
-            keyWord: value
+            keyWord: value,
+            currentPage: 1
         });
     }
 
@@ -48,7 +50,7 @@ export default class App extends Component{
 
     render() {
 
-        const { genresList, keyWord, currentPage } = this.state;
+        const { genresList, keyWord, currentPage, totalPages } = this.state;
 
         const title = keyWord ? '' : 'Top Rated Movies'
 
@@ -75,11 +77,14 @@ export default class App extends Component{
                             </Col>
                         </Row>
 
-                        <h1 style={{textAlign:'center', color:'darkgray'}}>{title}</h1>
+                        <h1 style={{ textAlign:'center', color:'darkgray' }}>{ title }</h1>
 
-                        <MoviesList keyWord={keyWord} currentPage={currentPage}/>
+                        <MoviesList keyWord={ keyWord }
+                                    currentPage={ currentPage }/>
 
-                        <PaginationBox currentPage={currentPage} changePage={this.changePage}/>
+                        <PaginationBox currentPage={ currentPage }
+                                       totalPages={ totalPages }
+                                       changePage={this.changePage}/>
                     </Layout>
                 </ErrorBoundry>
             </MovieDBServiceProvider>
