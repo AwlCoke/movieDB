@@ -1,13 +1,15 @@
 import React from "react";
-import {MovieDBServiceConsumer} from "../context";
 import {Button} from "antd";
+import {MovieDBServiceConsumer} from "../context";
 
 const Genre = ({genres}) => {
     return (
         <MovieDBServiceConsumer>
             {
                 (genresList) => {
-
+                    genres.forEach((genre, id) => {
+                        if (genresList[genre[id]]) <Button>{genresList[genre[id]]}</Button>
+                    })
                 }
             }
         </MovieDBServiceConsumer>

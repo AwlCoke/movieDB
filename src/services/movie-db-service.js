@@ -40,7 +40,6 @@ export default class MovieDbService {
         let res;
         if (keyword) res = await this.getResource(`/${keyword}/`, pageNumber);
         else res = await this.getTopRatedMovies(pageNumber);
-        console.log(res.results.map(this.transformMovie))
         return res.results.map(this.transformMovie);
     }
 

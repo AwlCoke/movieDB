@@ -17,7 +17,8 @@ export default class App extends Component{
         service: new MovieDbService,
         keyWord: '',
         currentPage: 1,
-        totalPages: 100
+        totalResults: 200,
+        pageSize: 20
     }
 
     componentDidMount() {
@@ -50,9 +51,9 @@ export default class App extends Component{
 
     render() {
 
-        const { genresList, keyWord, currentPage, totalPages } = this.state;
+        const { genresList, keyWord, currentPage, totalResults, pageSize } = this.state;
 
-        const title = keyWord ? `Results for "${keyWord}"` : 'Top 100 Rated Movies'
+        const title = keyWord ? `Results for "${keyWord}"` : 'Top 200 Rated Movies'
 
         return (
             <MovieDBServiceProvider value={  genresList  }>
@@ -83,7 +84,8 @@ export default class App extends Component{
                                     currentPage={ currentPage }/>
 
                         <PaginationBox currentPage={ currentPage }
-                                       totalPages={ totalPages }
+                                       totalResults={ totalResults }
+                                       pageSize={pageSize}
                                        changePage={this.changePage}/>
                     </Layout>
                 </ErrorBoundry>

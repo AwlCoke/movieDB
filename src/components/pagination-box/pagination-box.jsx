@@ -4,7 +4,6 @@ import {Pagination} from 'antd';
 export default class PaginationBox extends Component {
 
     onChange = (page) => {
-        console.log(page)
         const {changePage} = this.props;
         this.setState({
             currentPage: page,
@@ -13,14 +12,15 @@ export default class PaginationBox extends Component {
     }
 
     render() {
-        const { currentPage, totalPages } = this.props;
+        const { currentPage, totalResults, pageSize } = this.props;
         return (
             <Pagination className='pagination-box-wrapper'
                         showSizeChanger={false}
+                        pageSize={20}
                         onChange={this.onChange}
                         defaultCurrent={1}
                         current={currentPage}
-                        total={totalPages}/>
+                        total={totalResults}/>
         )
     }
 }

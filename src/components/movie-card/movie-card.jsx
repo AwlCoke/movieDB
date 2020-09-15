@@ -5,7 +5,6 @@ import './movie-card.css';
 import Spinner from '../spinner';
 import {formatDate} from '../hoc-helpers';
 
-
 export default class MovieCard extends Component {
 
     static defaultProps = {
@@ -53,8 +52,6 @@ export default class MovieCard extends Component {
 
         const {loading, userRate} = this.state;
 
-        // genres.forEach((genre) => console.log(title, genre[idx]))
-
         let styled;
 
         if (votes < 3) {
@@ -89,7 +86,6 @@ export default class MovieCard extends Component {
                     <Meta title={ title } className='title'/>
 
                     <Button className='averageVote'
-                            genres={genres}
                             style={{color: styled, borderColor: styled}}
                             shape='circle'>{ votes }
                     </Button>
