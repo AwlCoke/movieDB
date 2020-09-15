@@ -48,6 +48,6 @@
     "husky": "^4.2.5",
     "lint-staged": "^10.3.0",
     "prettier": "^2.1.1",
-    "react-paginate": "^6.4.0"
+    "react-paginate": "^6.5.0"
   }
 }

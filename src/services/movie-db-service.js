@@ -26,27 +26,29 @@ export default class MovieDbService {
         return res.genres.map(this.transformGenres);
     }
 
-    getTopRatedMovies = async (pageNumber=1) => {
+    getTopRatedMovies = async (pageNumber) => {
         let res = await fetch(`${this.apiBase}/3/movie/top_rated?api_key=${this.apiKey}&page=${pageNumber}`);
         if (!res.ok) {
             throw new Error(`Could not fetch ${this.apiBase}` +
                 `, received ${res.status}`)
         }
         res = await res.json();
+        console.log(res);
         return res;
     }
 
-    getMovies = async(keyword) => {
+    getMovies = async(keyword, pageNumber) => {
         let res;
-        if (keyword) res = await this.getResource(`/${keyword}/`);
-        else res = await this.getTopRatedMovies();
-        console.log(res);
+        if (keyword) res = await this.getResource(`/${keyword}/`, pageNumber);
+        else res = await this.getTopRatedMovies(pageNumber);
+        console.log("service ", keyword, pageNumber)
         return res.results.map(this.transformMovie);
     }
 
     transformMovie = (movie) => {
         const url = movie.poster_path ?
-            `https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}` : null;
+            `https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}`
+            : null;
         return {
             id: movie.id,
             title: movie.title,

@@ -1,8 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {Form, Input} from "antd";
+import {Input} from "antd";
 import debounce from 'lodash.debounce';
-import MovieDbService from '../../services/movie-db-service';
 
 export default class SearchPanel extends Component {
     static defaultProps = {
@@ -13,20 +12,14 @@ export default class SearchPanel extends Component {
         onSearch: PropTypes.func,
     }
 
-    movieDBService = new MovieDbService();
-
     state = {
         query: '',
     }
 
     onChange = (event) => {
-        const {query} = this.state;
-        const {onSearch} = this.props;
         this.setState({
             query: event.target.value,
         });
-        const debounceSearch = debounce((arg) => onSearch(arg), 1000);
-        debounceSearch(query);
     }
 
     onSubmit = (event) => {
@@ -39,14 +32,13 @@ export default class SearchPanel extends Component {
     render() {
         const {query} = this.state;
         return (
-            <Form onSubmit={this.onSubmit}>
+            <form onSubmit={this.onSubmit}>
                 <Input placeholder='Type to search...'
                        value={query}
                        onChange={this.onChange}
                        size='large'
-
                 />
-            </Form>
+            </form>
         )
     }
 }

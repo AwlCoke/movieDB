@@ -6,7 +6,7 @@ import Header from '../header';
 import PaginationBox from '../pagination-box';
 import ErrorBoundry from '../error-boundry';
 import MovieDbService from '../../services/movie-db-service';
-import {MovieDBServiceProvider} from "../context";
+import {MovieDBServiceProvider} from '../context';
 
 const { TabPane } = Tabs;
 
@@ -16,7 +16,7 @@ export default class App extends Component{
         genresList: [],
         service: new MovieDbService,
         keyWord: '',
-        currentPage: 2
+        currentPage: 1
     }
 
     componentDidMount() {
@@ -48,12 +48,12 @@ export default class App extends Component{
 
     render() {
 
-        const { genresList, service, keyWord, currentPage } = this.state;
+        const { genresList, keyWord, currentPage } = this.state;
 
         const title = keyWord ? '' : 'Top Rated Movies'
 
         return (
-            <MovieDBServiceProvider value={ [ genresList, service, currentPage ] }>
+            <MovieDBServiceProvider value={  genresList  }>
                 <ErrorBoundry>
                     <Layout className='content-wrapper'
                             style={{backgroundColor:'white'}}>
@@ -79,8 +79,7 @@ export default class App extends Component{
 
                         <MoviesList keyWord={keyWord} currentPage={currentPage}/>
 
-                        <PaginationBox currentPage={currentPage} onChange={this.changePage}/>
-
+                        <PaginationBox currentPage={currentPage} changePage={this.changePage}/>
                     </Layout>
                 </ErrorBoundry>
             </MovieDBServiceProvider>

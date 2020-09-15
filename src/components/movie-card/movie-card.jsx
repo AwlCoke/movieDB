@@ -1,17 +1,16 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Button, Card, Rate, Empty} from 'antd';
-import { format } from 'date-fns';
 import './movie-card.css';
-import Spinner from "../spinner";
-import {checkURL, checkDate, formatDate} from "../hoc-helpers";
+import Spinner from '../spinner';
+import {formatDate} from '../hoc-helpers';
 
 
 export default class MovieCard extends Component {
 
     static defaultProps = {
         description: '',
-        posterUrl: '',
+        posterUrl: null,
         title: '',
         votes: 0,
         releaseDate: '',
@@ -43,25 +42,41 @@ export default class MovieCard extends Component {
 
     render() {
 
+        const estimates = {
+            low: '#E90000',
+            middle: '#E97E00',
+            high: '#E9D100',
+            veryHigh: '#66E900'
+        }
+
         const {description, posterUrl, title, votes, releaseDate, genres } = this.props;
 
         const {loading, userRate} = this.state;
 
-        // console.log(genres);
+        // genres.forEach((genre) => console.log(title, genre[idx]))
+
+        let styled;
+
+        if (votes < 3) {
+            styled = `${estimates.low}`;
+        } else if (votes < 5) {
+            styled = `${estimates.middle}`;
+        } else if (votes < 7) {
+            styled = `${estimates.high}`;
+        } else styled = `${estimates.veryHigh}`;
 
         const shorly = this.shorten(description, 150);
 
         const date = formatDate(releaseDate);
 
-        const poster = posterUrl ? (<img className='poster'
-                                             src={ posterUrl }
-                                             alt={ `poster of ${title}` }/>)
-                                            : (<Empty image={Empty.PRESENTED_IMAGE_SIMPLE}style={{width:200}}/>);
+        const poster = posterUrl != null ? (<img className='poster'
+                                         src={ posterUrl }
+                                         alt={ `poster of ${title}` }/>)
+                                         : (<Empty image={Empty.PRESENTED_IMAGE_SIMPLE}style={{width:200}}/>);
 
         const { Meta } = Card;
 
         if (loading) return <Spinner/>
-
 
         return(
             <>
@@ -74,16 +89,14 @@ export default class MovieCard extends Component {
                     <Meta title={ title } className='title'/>
 
                     <Button className='averageVote'
-                            danger
+                            genres={genres}
+                            style={{color: styled, borderColor: styled}}
                             shape='circle'>{ votes }
                     </Button>
 
                     <div style={{marginTop:10, marginBottom: 10}}>{ date }</div>
 
-                    <Button shape='round'
-                            disabled>
-                        GENRE
-                    </Button>
+                    <Button shape='round'>GENRE</Button>
 
                     <div style={{marginTop:10}}>{ shorly }</div>
 
@@ -92,9 +105,7 @@ export default class MovieCard extends Component {
                           count='10'
                           defaultValue={ userRate }
                           className='stars'/>
-
                 </Card>
-
             </>
         );
     }

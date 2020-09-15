@@ -10,10 +10,12 @@ import ErrorBoundry from "../error-boundry";
 export default class MoviesList extends Component {
     static defaultProps = {
         keyWord: '',
+        currentPage: 1
     };
 
     static propTypes = {
         keyWord: PropTypes.string,
+        currentPage: PropTypes.number
     };
 
     movieDBService = new MovieDbService();
@@ -23,11 +25,13 @@ export default class MoviesList extends Component {
     }
 
     componentDidMount() {
+        console.log('page: ', this.props.currentPage)
         this.updateList();
     }
 
     componentDidUpdate(prevProps) {
         const {keyWord, currentPage} = this.props
+        console.log(currentPage, prevProps.currentPage)
         if (keyWord !== prevProps.keyWord || currentPage !== prevProps.currentPage) {
             this.updateList();
         }
@@ -38,9 +42,8 @@ export default class MoviesList extends Component {
         this.movieDBService
             .getMovies(keyWord, currentPage)
             .then(moviesList => {
-                this.setState({ moviesList })
+                this.setState({ moviesList, currentPage })
             });
-
     }
 
 
