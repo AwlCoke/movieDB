@@ -40,7 +40,7 @@ export default class MoviesList extends Component {
         this.movieDBService
             .getMovies(keyWord, currentPage)
             .then(moviesList => {
-                this.setState({ moviesList, currentPage })
+                this.setState({ moviesList })
             });
     }
 
