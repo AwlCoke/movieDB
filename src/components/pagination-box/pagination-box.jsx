@@ -16,6 +16,7 @@ export default class PaginationBox extends Component {
         const { currentPage, totalPages } = this.props;
         return (
             <Pagination className='pagination-box-wrapper'
+                        showSizeChanger={false}
                         onChange={this.onChange}
                         defaultCurrent={1}
                         current={currentPage}

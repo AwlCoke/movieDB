@@ -17,7 +17,7 @@ export default class App extends Component{
         service: new MovieDbService,
         keyWord: '',
         currentPage: 1,
-        totalPages: 50
+        totalPages: 1000
     }
 
     componentDidMount() {
@@ -52,7 +52,7 @@ export default class App extends Component{
 
         const { genresList, keyWord, currentPage, totalPages } = this.state;
 
-        const title = keyWord ? '' : 'Top Rated Movies'
+        const title = keyWord ? `Results for "${keyWord}"` : 'Top Rated Movies'
 
         return (
             <MovieDBServiceProvider value={  genresList  }>

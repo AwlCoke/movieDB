@@ -25,13 +25,11 @@ export default class MoviesList extends Component {
     }
 
     componentDidMount() {
-        console.log('page: ', this.props.currentPage)
         this.updateList();
     }
 
     componentDidUpdate(prevProps) {
-        const {keyWord, currentPage} = this.props
-        console.log(currentPage, prevProps.currentPage)
+        const {keyWord, currentPage} = this.props;
         if (keyWord !== prevProps.keyWord || currentPage !== prevProps.currentPage) {
             this.updateList();
         }

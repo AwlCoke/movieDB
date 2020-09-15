@@ -33,7 +33,6 @@ export default class MovieDbService {
                 `, received ${res.status}`)
         }
         res = await res.json();
-        console.log(res);
         return res;
     }
 
@@ -41,7 +40,6 @@ export default class MovieDbService {
         let res;
         if (keyword) res = await this.getResource(`/${keyword}/`, pageNumber);
         else res = await this.getTopRatedMovies(pageNumber);
-        console.log("service ", keyword, pageNumber)
         return res.results.map(this.transformMovie);
     }
 
