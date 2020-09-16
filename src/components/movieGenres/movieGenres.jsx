@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {Button} from "antd";
 import {MovieDBServiceConsumer} from "../context";
 import Spinner from "../spinner";
-import {Button} from "antd";
 
 const MovieGenres = ({genres, loading}) => {
 
@@ -13,9 +13,9 @@ const MovieGenres = ({genres, loading}) => {
                     return (genresList.length && !loading) ?
                         (<div>
                             {
-                                genres.map(genre => {
+                                genres.map((genre, idx) => {
                                     return genresList.map(arr => {
-                                        if (arr[0] === genre) {
+                                        if (arr[0] === genre && idx < 4) {
                                             return <Button key={genre}
                                                            shape="round"
                                                            style={{marginRight:5, marginBottom: 5}}>{arr[1]}</Button>

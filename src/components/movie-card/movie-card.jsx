@@ -58,7 +58,7 @@ export default class MovieCard extends Component {
             styled = `${estimates.high}`;
         } else styled = `${estimates.veryHigh}`;
 
-        const shorly = shorten(description, 150);
+        const shorly = shorten(description, 120);
 
         const date = formatDate(releaseDate);
 
