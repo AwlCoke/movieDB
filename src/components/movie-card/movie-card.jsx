@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Card, Rate, Empty } from 'antd';
 import './movie-card.css';
 import Spinner from '../spinner';
-import { formatDate } from '../hoc-helpers';
+import {formatDate, shorten} from '../hoc-helpers';
 import MovieGenres from "../movieGenres";
 
 export default class MovieCard extends Component {
@@ -35,11 +35,6 @@ export default class MovieCard extends Component {
         this.setState({ loading: false })
     }
 
-    shorten = (text, max) => {
-        const substr = text.slice(0, max).split(' ').slice(0, -1);
-        return text && text.length > max ? `${substr.join(' ')}...` : text
-    }
-
     render() {
 
         const estimates = {
@@ -63,7 +58,7 @@ export default class MovieCard extends Component {
             styled = `${estimates.high}`;
         } else styled = `${estimates.veryHigh}`;
 
-        const shorly = this.shorten(description, 150);
+        const shorly = shorten(description, 150);
 
         const date = formatDate(releaseDate);
 
@@ -95,14 +90,11 @@ export default class MovieCard extends Component {
 
                     <div style={{marginTop:10, marginBottom: 10}}>{ date }</div>
 
-                    <div style={{minHeight: 20}}>
+                    <div style={{minHeight: 40}}>
+                        <span>Genres List</span>
                         <MovieGenres genres={genres}
                                      loading={loading}/>
                     </div>
-
-                    <MovieGenres genres={genres}
-                                 loading={loading}
-                                 title={title}/>
 
                     <div style={{marginTop:10}}>{ shorly }</div>
 

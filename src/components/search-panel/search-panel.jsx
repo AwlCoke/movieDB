@@ -16,12 +16,13 @@ export default class SearchPanel extends Component {
     }
 
     onChange = (event) => {
-        const { query } = this.state;
         const { onSearch } = this.props
         this.setState({
             query: event.target.value,
+        }, () => {
+            const { query } = this.state;
+            onSearch(query)
         });
-        onSearch(query);
     }
 
     onSubmit = (event) => {

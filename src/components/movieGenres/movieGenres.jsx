@@ -12,11 +12,15 @@ const MovieGenres = ({genres, loading}) => {
                     return (genresList.length && !loading) ? (
                         <div>
                             {
-                                genres.map(el =>
-                                    genresList.forEach(arr => {
-                                        if (arr[0] === el) return <span>{arr[1]}</span>
-                                        return <span>genre</span>
-                                    }))
+                                genres.map(el => el.map (genre => {
+                                    return genresList.forEach(arr => {
+                                        if (arr[0] === genre) {
+                                            // console.log(arr[1])
+                                            return <span>{arr[1]}</span>
+                                        }
+                                        return ''
+                                    })}))
+
                             }
                         </div>)
                         : <Spinner/>
