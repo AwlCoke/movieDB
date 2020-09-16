@@ -1,114 +1,107 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Card, Rate, Empty } from 'antd';
 import './movie-card.css';
 import Spinner from '../spinner';
-import {formatDate, shorten} from '../hoc-helpers';
-import MovieGenres from "../movieGenres";
+import { formatDate, shorten } from '../hoc-helpers';
+import MovieGenres from '../movieGenres';
 
 export default class MovieCard extends Component {
+  static defaultProps = {
+    description: '',
+    posterUrl: null,
+    title: '',
+    votes: 0,
+    releaseDate: '',
+    genres: [],
+  };
 
-    static defaultProps = {
-        description: '',
-        posterUrl: null,
-        title: '',
-        votes: 0,
-        releaseDate: '',
-        genres: []
-    }
+  static propTypes = {
+    description: PropTypes.string,
+    posterUrl: PropTypes.string,
+    title: PropTypes.string,
+    votes: PropTypes.number,
+    releaseDate: PropTypes.string,
+    genres: PropTypes.instanceOf(Array),
+  };
 
-    static propTypes = {
-        description: PropTypes.string,
-        posterUrl: PropTypes.string,
-        title: PropTypes.string,
-        votes: PropTypes.number,
-        releaseDate: PropTypes.string,
-        genres: PropTypes.instanceOf(Array)
-    }
+  state = {
+    userRate: 0,
+    loading: true,
+  };
 
-    state = {
-        userRate: 0,
-        loading: true,
-    }
+  componentDidMount() {
+    this.setState({ loading: false });
+  }
 
-    componentDidMount() {
-        this.setState({ loading: false })
-    }
+  render() {
+    const estimates = {
+      low: '#E90000',
+      middle: '#E97E00',
+      high: '#E9D100',
+      veryHigh: '#66E900',
+    };
 
-    render() {
+    const { description, posterUrl, title, votes, releaseDate, genres } = this.props;
 
-        const estimates = {
-            low: '#E90000',
-            middle: '#E97E00',
-            high: '#E9D100',
-            veryHigh: '#66E900'
-        }
+    const { loading, userRate } = this.state;
 
-        const { description, posterUrl, title, votes, releaseDate, genres } = this.props;
+    let styled;
 
+    if (votes < 3) {
+      styled = `${estimates.low}`;
+    } else if (votes < 5) {
+      styled = `${estimates.middle}`;
+    } else if (votes < 7) {
+      styled = `${estimates.high}`;
+    } else styled = `${estimates.veryHigh}`;
 
-        const {loading, userRate} = this.state;
+    const count = genres.length;
 
-        let styled;
+    const shortly = shorten(description, count);
 
-        if (votes < 3) {
-            styled = `${estimates.low}`;
-        } else if (votes < 5) {
-            styled = `${estimates.middle}`;
-        } else if (votes < 7) {
-            styled = `${estimates.high}`;
-        } else styled = `${estimates.veryHigh}`;
+    const date = formatDate(releaseDate);
 
-        const count = genres.length;
+    const poster =
+      posterUrl != null ? (
+        <img className="poster" src={posterUrl} alt={`poster of ${title}`} />
+      ) : (
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} style={{ width: 200 }} />
+      );
 
-        const shortly = shorten(description, count);
+    const { Meta } = Card;
 
-        const date = formatDate(releaseDate);
+    if (loading) return <Spinner />;
 
-        const poster = posterUrl != null ? (<img className='poster'
-                                                 src={ posterUrl }
-                                                 alt={ `poster of ${title}` }/>)
-                                         : (<Empty image={Empty.PRESENTED_IMAGE_SIMPLE}
-                                                   style={{width:200}}/>);
+    return (
+      <>
+        <Card
+          loading={loading}
+          hoverable
+          bordered={false}
+          className="movieCard"
+          cover={poster}
+          bodyStyle={{ width: 270 }}
+        >
+          <Meta title={title} className="title" />
 
-        const { Meta } = Card;
+          <Button
+            className="averageVote"
+            style={{ color: 'darkgray', fontWeight: 600, borderWidth: 2, borderColor: styled }}
+            shape="circle"
+          >
+            {votes}
+          </Button>
 
-        if (loading) return <Spinner/>
+          <div style={{ marginTop: 10, marginBottom: 10 }}>{date}</div>
 
-        return(
-            <>
-                <Card loading={loading}
-                      hoverable
-                      bordered={false}
-                      className='movieCard'
-                      cover={poster}
-                      bodyStyle={{width: 270}}>
+          <MovieGenres genres={genres} loading={loading} />
 
-                    <Meta title={ title } className='title'/>
+          <div style={{ marginTop: 10 }}>{shortly}</div>
 
-                    <Button className='averageVote'
-                            style={{color: styled, borderColor: styled}}
-                            shape='circle'>{ votes }
-                    </Button>
-
-                    <div style={{marginTop:10, marginBottom: 10}}>{ date }</div>
-
-
-                    <MovieGenres genres={genres}
-                                 loading={loading}/>
-
-
-                    <div style={{marginTop:10}}>{ shortly }</div>
-
-                    <Rate allowHalf
-                          allowClear
-                          count='10'
-                          value={ userRate }
-                          defaultValue={ 0 }
-                          className='stars'/>
-
-                </Card>
-            </>
-        );
-    }
+          <Rate allowHalf allowClear count="10" value={userRate} defaultValue={0} className="stars" />
+        </Card>
+      </>
+    );
+  }
 }
