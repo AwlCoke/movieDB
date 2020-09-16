@@ -16,7 +16,8 @@ const MovieGenres = ({genres, loading}) => {
                                 genres.map(genre => {
                                     return genresList.map(arr => {
                                         if (arr[0] === genre) {
-                                            return <Button shape="round"
+                                            return <Button key={genre}
+                                                           shape="round"
                                                            style={{marginRight:5, marginBottom: 5}}>{arr[1]}</Button>
                                         }
                                         return null
