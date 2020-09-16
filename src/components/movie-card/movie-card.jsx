@@ -90,11 +90,10 @@ export default class MovieCard extends Component {
 
                     <div style={{marginTop:10, marginBottom: 10}}>{ date }</div>
 
-                    <div style={{minHeight: 40}}>
-                        <span>Genres List</span>
-                        <MovieGenres genres={genres}
-                                     loading={loading}/>
-                    </div>
+
+                    <MovieGenres genres={genres}
+                                 loading={loading}/>
+
 
                     <div style={{marginTop:10}}>{ shorly }</div>
 

@@ -59,7 +59,7 @@ export default class MovieDbService {
             description: movie.overview,
             votes: movie.vote_average,
             releaseDate: movie.release_date,
-            genres: [genres],
+            genres: genres,
         }
     }
 

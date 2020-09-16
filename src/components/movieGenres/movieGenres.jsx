@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import {MovieDBServiceConsumer} from "../context";
 import Spinner from "../spinner";
+import {Button} from "antd";
 
 const MovieGenres = ({genres, loading}) => {
 
@@ -9,18 +10,17 @@ const MovieGenres = ({genres, loading}) => {
         <MovieDBServiceConsumer>
             {
                 (genresList) => {
-                    return (genresList.length && !loading) ? (
-                        <div>
+                    return (genresList.length && !loading) ?
+                        (<div>
                             {
-                                genres.map(el => el.map (genre => {
-                                    return genresList.forEach(arr => {
+                                genres.map(genre => {
+                                    return genresList.map(arr => {
                                         if (arr[0] === genre) {
-                                            // console.log(arr[1])
-                                            return <span>{arr[1]}</span>
+                                            return <Button shape="round"
+                                                           style={{marginRight:5, marginBottom: 5}}>{arr[1]}</Button>
                                         }
-                                        return ''
-                                    })}))
-
+                                        return null
+                                    })})
                             }
                         </div>)
                         : <Spinner/>
