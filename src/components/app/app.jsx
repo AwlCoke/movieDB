@@ -1,12 +1,13 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import debounce from 'lodash.debounce';
 import './app.css';
-import {Col, Layout, PageHeader, Row, Tabs} from 'antd';
+import { Col, Layout, PageHeader, Row, Tabs } from 'antd';
 import MoviesList from '../movies-list';
 import Header from '../header';
 import PaginationBox from '../pagination-box';
 import ErrorBoundry from '../error-boundry';
 import MovieDbService from '../../services/movie-db-service';
-import {MovieDBServiceProvider} from '../context';
+import { MovieDBServiceProvider } from '../context';
 
 const { TabPane } = Tabs;
 
@@ -14,7 +15,7 @@ export default class App extends Component{
 
     state = {
         genresList: [],
-        service: new MovieDbService,
+        service: new MovieDbService(),
         keyWord: '',
         currentPage: 1,
         totalResults: 200,
@@ -43,6 +44,13 @@ export default class App extends Component{
         });
     }
 
+    // eslint-disable-next-line react/sort-comp
+    handlerSearch = debounce(this.onSearch.bind(this), 500);
+
+    getTotalResults = (totalResults) => {
+        this.setState({totalResults})
+    }
+
     changePage = (pageNumber) => {
         this.setState({
             currentPage: pageNumber
@@ -53,7 +61,7 @@ export default class App extends Component{
 
         const { genresList, keyWord, currentPage, totalResults, pageSize } = this.state;
 
-        const title = keyWord ? `Results for "${keyWord}"` : 'Top 200 Rated Movies'
+        const title = keyWord ? `Results for "${keyWord.toUpperCase()}"` : 'Top 200 Rated Movies'
 
         return (
             <MovieDBServiceProvider value={  genresList  }>
@@ -74,14 +82,17 @@ export default class App extends Component{
                         <Row gutter={[16, 32]}
                              justify='center'>
                             <Col span={16} style={{padding:0}}>
-                                <Header onSearch={this.onSearch}/>
+                                <Header onSearch={this.handlerSearch}/>
                             </Col>
                         </Row>
 
-                        <h1 style={{ textAlign:'center', color:'darkgray' }}>{ title }</h1>
+                        <h1 style={{ textAlign:'center',
+                                     color:'darkgray',
+                                     marginBottom: 20}}>{ title }</h1>
 
                         <MoviesList keyWord={ keyWord }
-                                    currentPage={ currentPage }/>
+                                    currentPage={ currentPage }
+                                    getTotalResults={this.getTotalResults}/>
 
                         <PaginationBox currentPage={ currentPage }
                                        totalResults={ totalResults }

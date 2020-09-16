@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {Input} from "antd";
-import debounce from 'lodash.debounce';
 
 export default class SearchPanel extends Component {
     static defaultProps = {
@@ -17,9 +16,12 @@ export default class SearchPanel extends Component {
     }
 
     onChange = (event) => {
+        const { query } = this.state;
+        const { onSearch } = this.props
         this.setState({
             query: event.target.value,
         });
+        onSearch(query);
     }
 
     onSubmit = (event) => {

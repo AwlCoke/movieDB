@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, Card, Rate, Empty} from 'antd';
+import { Button, Card, Rate, Empty } from 'antd';
 import './movie-card.css';
 import Spinner from '../spinner';
-import {formatDate} from '../hoc-helpers';
+import { formatDate } from '../hoc-helpers';
+import MovieGenres from "../movieGenres";
 
 export default class MovieCard extends Component {
 
@@ -48,7 +49,7 @@ export default class MovieCard extends Component {
             veryHigh: '#66E900'
         }
 
-        const {description, posterUrl, title, votes, releaseDate, genres } = this.props;
+        const { description, posterUrl, title, votes, releaseDate, genres } = this.props;
 
         const {loading, userRate} = this.state;
 
@@ -67,9 +68,10 @@ export default class MovieCard extends Component {
         const date = formatDate(releaseDate);
 
         const poster = posterUrl != null ? (<img className='poster'
-                                         src={ posterUrl }
-                                         alt={ `poster of ${title}` }/>)
-                                         : (<Empty image={Empty.PRESENTED_IMAGE_SIMPLE}style={{width:200}}/>);
+                                                 src={ posterUrl }
+                                                 alt={ `poster of ${title}` }/>)
+                                         : (<Empty image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                                   style={{width:200}}/>);
 
         const { Meta } = Card;
 
@@ -77,7 +79,8 @@ export default class MovieCard extends Component {
 
         return(
             <>
-                <Card hoverable
+                <Card loading={loading}
+                      hoverable
                       bordered={false}
                       className='movieCard'
                       cover={poster}
@@ -92,15 +95,24 @@ export default class MovieCard extends Component {
 
                     <div style={{marginTop:10, marginBottom: 10}}>{ date }</div>
 
-                    <Button shape='round'>GENRE</Button>
+                    <div style={{minHeight: 20}}>
+                        <MovieGenres genres={genres}
+                                     loading={loading}/>
+                    </div>
+
+                    <MovieGenres genres={genres}
+                                 loading={loading}
+                                 title={title}/>
 
                     <div style={{marginTop:10}}>{ shorly }</div>
 
                     <Rate allowHalf
                           allowClear
                           count='10'
-                          defaultValue={ userRate }
+                          value={ userRate }
+                          defaultValue={ 0 }
                           className='stars'/>
+
                 </Card>
             </>
         );

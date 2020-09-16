@@ -1,26 +1,37 @@
-import React, {Component} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {Pagination} from 'antd';
 
-export default class PaginationBox extends Component {
+const PaginationBox = ({ currentPage, totalResults, pageSize, changePage }) => {
 
-    onChange = (page) => {
-        const {changePage} = this.props;
-        this.setState({
-            currentPage: page,
-        })
+    const onChange = (page) => {
         changePage(page)
     }
 
-    render() {
-        const { currentPage, totalResults, pageSize } = this.props;
-        return (
-            <Pagination className='pagination-box-wrapper'
-                        showSizeChanger={false}
-                        pageSize={20}
-                        onChange={this.onChange}
-                        defaultCurrent={1}
-                        current={currentPage}
-                        total={totalResults}/>
-        )
-    }
+    return (
+        <Pagination className='pagination-box-wrapper'
+                    showSizeChanger={false}
+                    pageSize={pageSize}
+                    onChange={onChange}
+                    defaultCurrent={1}
+                    current={currentPage}
+                    total={totalResults}/>
+    )
+
+}
+
+export default PaginationBox;
+
+PaginationBox.defaultProps = {
+    currentPage: 1,
+    totalResults: 1,
+    pageSize: 1,
+    changePage: () => {}
+}
+
+PaginationBox.propTypes = {
+    currentPage: PropTypes.number,
+    totalResults: PropTypes.number,
+    pageSize: PropTypes.number,
+    changePage: PropTypes.func,
 }
