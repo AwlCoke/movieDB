@@ -14,6 +14,7 @@ const { TabPane } = Tabs;
 export default class App extends Component{
 
     state = {
+        loading: true,
         genresList: [],
         service: new MovieDbService(),
         keyWord: '',
@@ -27,6 +28,7 @@ export default class App extends Component{
         genres.then(res => {
             this.setState({
                 genresList: res,
+                loading: false
             });
         });
     };
@@ -59,7 +61,7 @@ export default class App extends Component{
 
     render() {
 
-        const { genresList, keyWord, currentPage, totalResults, pageSize } = this.state;
+        const { loading, genresList, keyWord, currentPage, totalResults, pageSize } = this.state;
 
         const title = keyWord ? `Results for "${keyWord.toUpperCase()}"` : 'Top 200 Rated Movies'
 
@@ -97,7 +99,8 @@ export default class App extends Component{
                         <PaginationBox currentPage={ currentPage }
                                        totalResults={ totalResults }
                                        pageSize={pageSize}
-                                       changePage={this.changePage}/>
+                                       changePage={this.changePage}
+                                       loading={loading}/>
                     </Layout>
                 </ErrorBoundry>
             </MovieDBServiceProvider>

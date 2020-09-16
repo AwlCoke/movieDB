@@ -2,20 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Pagination} from 'antd';
 
-const PaginationBox = ({ currentPage, totalResults, pageSize, changePage }) => {
+const PaginationBox = ({ currentPage, totalResults, pageSize, changePage, loading }) => {
 
     const onChange = (page) => {
         changePage(page)
     }
 
     return (
-        <Pagination className='pagination-box-wrapper'
-                    showSizeChanger={false}
-                    pageSize={pageSize}
-                    onChange={onChange}
-                    defaultCurrent={1}
-                    current={currentPage}
-                    total={totalResults}/>
+        !loading && <Pagination className='pagination-box-wrapper'
+                                showSizeChanger={false}
+                                pageSize={pageSize}
+                                onChange={onChange}
+                                defaultCurrent={1}
+                                current={currentPage}
+                                total={totalResults}/>
     )
 
 }
@@ -23,6 +23,7 @@ const PaginationBox = ({ currentPage, totalResults, pageSize, changePage }) => {
 export default PaginationBox;
 
 PaginationBox.defaultProps = {
+    loading: true,
     currentPage: 1,
     totalResults: 1,
     pageSize: 1,
@@ -30,6 +31,7 @@ PaginationBox.defaultProps = {
 }
 
 PaginationBox.propTypes = {
+    loading: PropTypes.bool,
     currentPage: PropTypes.number,
     totalResults: PropTypes.number,
     pageSize: PropTypes.number,
