@@ -46,6 +46,7 @@ export default class MovieCard extends Component {
 
         const { description, posterUrl, title, votes, releaseDate, genres } = this.props;
 
+
         const {loading, userRate} = this.state;
 
         let styled;
@@ -58,7 +59,9 @@ export default class MovieCard extends Component {
             styled = `${estimates.high}`;
         } else styled = `${estimates.veryHigh}`;
 
-        const shorly = shorten(description, 120);
+        const count = genres.length;
+
+        const shortly = shorten(description, count);
 
         const date = formatDate(releaseDate);
 
@@ -95,7 +98,7 @@ export default class MovieCard extends Component {
                                  loading={loading}/>
 
 
-                    <div style={{marginTop:10}}>{ shorly }</div>
+                    <div style={{marginTop:10}}>{ shortly }</div>
 
                     <Rate allowHalf
                           allowClear
