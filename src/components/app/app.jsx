@@ -16,6 +16,7 @@ export default class App extends Component {
     loading: true,
     genresList: [],
     service: new MovieDbService(),
+    sessionId: '',
     keyWord: '',
     currentPage: 1,
     totalResults: 200,
@@ -24,19 +25,27 @@ export default class App extends Component {
   };
 
   componentDidMount() {
-    const genres = this.getGenres();
-    genres.then((res) => {
+    this.getGenres();
+    this.startSession();
+  }
+
+  startSession = async () => {
+    const { service } = this.state;
+    await service.startGuestSession().then((res) => {
+      this.setState({
+        sessionId: res.guest_session_id,
+      });
+    });
+  };
+
+  getGenres = async () => {
+    const { service } = this.state;
+    await service.getAllGenres().then((res) => {
       this.setState({
         genresList: res,
         loading: false,
       });
     });
-  }
-
-  getGenres = async () => {
-    const { service } = this.state;
-    const genres = await service.getAllGenres();
-    return genres;
   };
 
   onTabChange = (key) => {
@@ -67,7 +76,7 @@ export default class App extends Component {
   };
 
   render() {
-    const { loading, genresList, keyWord, currentPage, totalResults, pageSize, tab } = this.state;
+    const { loading, genresList, keyWord, currentPage, totalResults, pageSize, tab, sessionId } = this.state;
 
     const title = keyWord ? `Results for "${keyWord.toUpperCase()}"` : 'Top 200 Rated Movies';
 
@@ -94,7 +103,13 @@ export default class App extends Component {
               </>
             )}
 
-            <MoviesList tab={tab} keyWord={keyWord} currentPage={currentPage} getTotalResults={this.getTotalResults} />
+            <MoviesList
+              tab={tab}
+              keyWord={keyWord}
+              currentPage={currentPage}
+              sessionId={sessionId}
+              getTotalResults={this.getTotalResults}
+            />
 
             <PaginationBox
               currentPage={currentPage}

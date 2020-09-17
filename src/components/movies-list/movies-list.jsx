@@ -12,12 +12,16 @@ export default class MoviesList extends Component {
     keyWord: '',
     currentPage: 1,
     getTotalResults: () => {},
+    tab: '',
+    sessionId: '',
   };
 
   static propTypes = {
     keyWord: PropTypes.string,
     currentPage: PropTypes.number,
     getTotalResults: PropTypes.func,
+    tab: PropTypes.string,
+    sessionId: PropTypes.string,
   };
 
   movieDBService = new MovieDbService();
@@ -31,26 +35,36 @@ export default class MoviesList extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { keyWord, currentPage } = this.props;
-    if (keyWord !== prevProps.keyWord || currentPage !== prevProps.currentPage) {
+    const { keyWord, currentPage, tab } = this.props;
+    if (keyWord !== prevProps.keyWord || currentPage !== prevProps.currentPage || tab !== prevProps.tab) {
       this.updateList();
     }
   }
 
   updateList() {
-    const { keyWord, currentPage, getTotalResults } = this.props;
-    this.movieDBService.getMovies(keyWord, currentPage).then((data) => {
-      const moviesList = data[1];
-      this.setState({ moviesList });
-      getTotalResults(data[0]);
-    });
+    const { keyWord, currentPage, getTotalResults, tab, sessionId } = this.props;
+    if (tab === 'search') {
+      this.movieDBService.getMovies(keyWord, currentPage).then((data) => {
+        const moviesList = data[1];
+        this.setState({ moviesList });
+        getTotalResults(data[0]);
+      });
+    }
+    if (tab === 'rated') {
+      this.movieDBService.getRatedMovies(sessionId).then((data) => {
+        const moviesList = data[1];
+        this.setState({ moviesList });
+        getTotalResults(data[0]);
+      });
+    }
   }
 
   renderMovies(arr) {
-    return arr.map(({ id, rate, ...props }) => {
+    const { sessionId } = this.props;
+    return arr.map(({ id, ...props }) => {
       return (
         <Col key={id} flex="left">
-          <MovieCard {...props} id={id} rate={rate} />
+          <MovieCard {...props} id={id} sessionId={sessionId} />
         </Col>
       );
     });

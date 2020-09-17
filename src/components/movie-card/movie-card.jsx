@@ -5,6 +5,7 @@ import './movie-card.css';
 import Spinner from '../spinner';
 import { formatDate, shorten } from '../hoc-helpers';
 import MovieGenres from '../movieGenres';
+import MovieDbService from '../../services/movie-db-service';
 
 export default class MovieCard extends Component {
   static defaultProps = {
@@ -14,6 +15,8 @@ export default class MovieCard extends Component {
     votes: 0,
     releaseDate: '',
     genres: [],
+    id: 0,
+    sessionId: '',
   };
 
   static propTypes = {
@@ -23,7 +26,11 @@ export default class MovieCard extends Component {
     votes: PropTypes.number,
     releaseDate: PropTypes.string,
     genres: PropTypes.instanceOf(Array),
+    id: PropTypes.number,
+    sessionId: PropTypes.string,
   };
+
+  movieDBService = new MovieDbService();
 
   state = {
     userRate: 0,
@@ -35,7 +42,9 @@ export default class MovieCard extends Component {
   }
 
   onChange = (value) => {
+    const { sessionId, id } = this.props;
     this.setState({ userRate: value });
+    this.movieDBService.rateMovie(id, sessionId, value);
   };
 
   render() {
@@ -103,15 +112,17 @@ export default class MovieCard extends Component {
 
           <div style={{ marginTop: 5 }}>{shortly}</div>
 
-          <Rate
-            allowHalf
-            allowClear
-            count="10"
-            value={userRate}
-            defaultValue={0}
-            className="stars"
-            onChange={this.onChange}
-          />
+          <form action="" method="post">
+            <Rate
+              allowHalf
+              allowClear
+              count="10"
+              value={userRate}
+              defaultValue={0}
+              className="stars"
+              onChange={this.onChange}
+            />
+          </form>
         </Card>
       </>
     );

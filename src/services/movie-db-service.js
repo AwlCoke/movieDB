@@ -50,6 +50,35 @@ export default class MovieDbService {
     return [200, res.results.map(this.transformMovie)];
   };
 
+  getRatedMovies = async (sessionID) => {
+    const url = `${this.apiBase}/3/guest_session/${sessionID}/rated/movies?api_key=${this.apiKey}`;
+    let res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`Could not rate`);
+    }
+    res = await res.json();
+    return [res.total_results, res.results.map(this.transformMovie)];
+  };
+
+  rateMovie = async (movieID, sessionID, value) => {
+    console.log(sessionID);
+    const url = `${this.apiBase}/3/movie/${movieID}/rating?api_key=${this.apiKey}&guest_session_id=${sessionID}`;
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({ value }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const result = await response.json();
+      if (!result.ok) console.log(result.status_message);
+      else console.log('Успех:', JSON.stringify(result));
+    } catch (error) {
+      console.error('Ошибка:', error);
+    }
+  };
+
   transformMovie = (movie) => {
     const url = movie.poster_path ? `https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}` : null;
     const genres = movie.genre_ids;
@@ -60,7 +89,6 @@ export default class MovieDbService {
       description: movie.overview,
       votes: movie.vote_average,
       releaseDate: movie.release_date,
-      rate: null,
       genres,
     };
   };
