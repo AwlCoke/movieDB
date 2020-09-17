@@ -1,15 +1,5 @@
-import {createContext} from "react";
+import { createContext } from 'react';
 
-const {
-    Provider: MovieDBServiceProvider,
-    Consumer: MovieDBServiceConsumer
-} = createContext();
+const { Provider: ContextProvider, Consumer: ContextConsumer } = createContext();
 
-export {
-    MovieDBServiceProvider,
-    MovieDBServiceConsumer
-}
-
-
-
-
+export { ContextProvider, ContextConsumer };

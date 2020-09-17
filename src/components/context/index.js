@@ -1,8 +1,3 @@
-import {MovieDBServiceProvider, MovieDBServiceConsumer} from './context';
+import { ContextProvider, ContextConsumer } from './context';
 
-export {
-    MovieDBServiceProvider,
-    MovieDBServiceConsumer
-};
-
-
+export { ContextProvider, ContextConsumer };

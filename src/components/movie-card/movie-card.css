@@ -1,32 +1,32 @@
 @import '~antd/dist/antd.css';
 
 .movieCard {
-    width: 470px;
-    height: 300px;
-    padding: 0;
-    display: flex;
-    position: relative;
-    box-shadow: 0.4em 0.4em 1em lightgray;
+  width: 470px;
+  height: 300px;
+  padding: 0;
+  display: flex;
+  position: relative;
+  box-shadow: 0.4em 0.4em 1em lightgray;
 }
 
 .averageVote {
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    right: 1em;
-    top: 1.5em;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 1em;
+  top: 1.5em;
 }
 
 .ant-card-meta-title {
-    width: 180px;
+  width: 180px;
 }
 
 .poster {
-    width: 200px;
+  width: 200px;
 }
 
 .stars {
-    font-size: 1.1em;
-    position: absolute;
-    bottom: 15px;
+  font-size: 1.1em;
+  position: absolute;
+  bottom: 15px;
 }

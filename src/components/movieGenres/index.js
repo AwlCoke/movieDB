@@ -1,3 +1,3 @@
-import MovieGenres from "./movieGenres";
+import MovieGenres from './movieGenres';
 
 export default MovieGenres;

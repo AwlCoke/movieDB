@@ -34,6 +34,10 @@ export default class MovieCard extends Component {
     this.setState({ loading: false });
   }
 
+  onChange = (value) => {
+    this.setState({ userRate: value });
+  };
+
   render() {
     const estimates = {
       low: '#E90000',
@@ -97,9 +101,17 @@ export default class MovieCard extends Component {
 
           <MovieGenres genres={genres} loading={loading} />
 
-          <div style={{ marginTop: 10 }}>{shortly}</div>
+          <div style={{ marginTop: 5 }}>{shortly}</div>
 
-          <Rate allowHalf allowClear count="10" value={userRate} defaultValue={0} className="stars" />
+          <Rate
+            allowHalf
+            allowClear
+            count="10"
+            value={userRate}
+            defaultValue={0}
+            className="stars"
+            onChange={this.onChange}
+          />
         </Card>
       </>
     );

@@ -7,7 +7,7 @@ import Header from '../header';
 import PaginationBox from '../pagination-box';
 import ErrorBoundry from '../error-boundry';
 import MovieDbService from '../../services/movie-db-service';
-import { MovieDBServiceProvider } from '../context';
+import { ContextProvider } from '../context';
 
 const { TabPane } = Tabs;
 
@@ -20,6 +20,7 @@ export default class App extends Component {
     currentPage: 1,
     totalResults: 200,
     pageSize: 20,
+    tab: 'search',
   };
 
   componentDidMount() {
@@ -36,6 +37,12 @@ export default class App extends Component {
     const { service } = this.state;
     const genres = await service.getAllGenres();
     return genres;
+  };
+
+  onTabChange = (key) => {
+    this.setState({
+      tab: key,
+    });
   };
 
   onSearch = (value) => {
@@ -56,33 +63,38 @@ export default class App extends Component {
     this.setState({
       currentPage: pageNumber,
     });
+    window.scrollTo(0, 0);
   };
 
   render() {
-    const { loading, genresList, keyWord, currentPage, totalResults, pageSize } = this.state;
+    const { loading, genresList, keyWord, currentPage, totalResults, pageSize, tab } = this.state;
 
     const title = keyWord ? `Results for "${keyWord.toUpperCase()}"` : 'Top 200 Rated Movies';
 
     return (
-      <MovieDBServiceProvider value={genresList}>
+      <ContextProvider value={genresList}>
         <ErrorBoundry>
           <Layout className="content-wrapper" style={{ backgroundColor: 'white' }}>
             <PageHeader title="" className="content-header">
-              <Tabs>
-                <TabPane tab="Search" key="1" />
-                <TabPane tab="Rated" key="2" />
+              <Tabs size="large" onChange={this.onTabChange}>
+                <TabPane tab="Search" key="search" />
+                <TabPane tab="Rated" key="rated" />
               </Tabs>
             </PageHeader>
 
-            <Row gutter={[16, 32]} justify="center">
-              <Col span={16} style={{ padding: 0 }}>
-                <Header onSearch={this.handlerSearch} />
-              </Col>
-            </Row>
+            {tab === 'search' && (
+              <>
+                <Row gutter={[16, 32]} justify="center">
+                  <Col span={16} style={{ padding: 0 }}>
+                    <Header onSearch={this.handlerSearch} />
+                  </Col>
+                </Row>
 
-            <h1 style={{ textAlign: 'center', color: 'darkgray', marginBottom: 20 }}>{title}</h1>
+                <h1 style={{ textAlign: 'center', color: 'darkgray', marginBottom: 20 }}>{title}</h1>
+              </>
+            )}
 
-            <MoviesList keyWord={keyWord} currentPage={currentPage} getTotalResults={this.getTotalResults} />
+            <MoviesList tab={tab} keyWord={keyWord} currentPage={currentPage} getTotalResults={this.getTotalResults} />
 
             <PaginationBox
               currentPage={currentPage}
@@ -93,7 +105,7 @@ export default class App extends Component {
             />
           </Layout>
         </ErrorBoundry>
-      </MovieDBServiceProvider>
+      </ContextProvider>
     );
   }
 }

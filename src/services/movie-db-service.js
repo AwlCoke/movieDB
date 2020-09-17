@@ -3,11 +3,20 @@ export default class MovieDbService {
 
   apiKey = '5c49318cf30b5f1de695245fd0a13af9';
 
+  startGuestSession = async () => {
+    let res = await fetch(`${this.apiBase}/3/authentication/guest_session/new?api_key=${this.apiKey}`);
+    if (!res.ok) {
+      throw new Error();
+    }
+    res = await res.json();
+    return res;
+  };
+
   getResource = async (url, pageNumber) => {
     let res = await fetch(`${this.apiBase}/3/search/movie?api_key=${this.apiKey}&query=${url}&page=${pageNumber}`);
 
     if (!res.ok) {
-      throw new Error(`Could not fetch ${url}` + `, received ${res.status}`);
+      throw new Error(`Could not fetch ${url}, received ${res.status}`);
     }
     res = await res.json();
     return res;
@@ -25,7 +34,7 @@ export default class MovieDbService {
   getTopRatedMovies = async (pageNumber) => {
     let res = await fetch(`${this.apiBase}/3/movie/top_rated?api_key=${this.apiKey}&page=${pageNumber}`);
     if (!res.ok) {
-      throw new Error(`Could not fetch ${this.apiBase}` + `, received ${res.status}`);
+      throw new Error(`Could not fetch ${this.apiBase}, received ${res.status}`);
     }
     res = await res.json();
     return res;
@@ -51,6 +60,7 @@ export default class MovieDbService {
       description: movie.overview,
       votes: movie.vote_average,
       releaseDate: movie.release_date,
+      rate: null,
       genres,
     };
   };

@@ -1,24 +1,27 @@
 @import '~antd/dist/antd.css';
 
-body, html {
-    padding: 0;
-    margin: 0;
-    background: #f0f2f5;
+body,
+html {
+  padding: 0;
+  margin: 0;
+  background: #f0f2f5;
+  scroll-behavior: smooth;
+
 }
 
 .content-wrapper {
-    max-width: 1440px;
-    min-height: 100%;
-    margin: 0 auto;
-    display: flex;
+  max-width: 1440px;
+  min-height: 100%;
+  margin: 0 auto;
+  display: flex;
 }
 
 .content-header {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .pagination-box-wrapper {
-    margin: 20px auto;
-    margin-top: 0;
+  margin: 20px auto;
+  margin-top: 0;
 }

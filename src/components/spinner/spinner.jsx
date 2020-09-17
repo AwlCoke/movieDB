@@ -1,13 +1,10 @@
-import React from "react";
-import { Spin } from "antd";
+import React from 'react';
+import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
 const Spinner = () => {
-    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
-    return (
-        <Spin indicator={ antIcon }
-              style={{margin:20}}/>
-    );
-}
+  const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+  return <Spin indicator={antIcon} style={{ margin: 20 }} />;
+};
 
 export default Spinner;
