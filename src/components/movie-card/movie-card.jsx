@@ -17,6 +17,7 @@ export default class MovieCard extends Component {
     genres: [],
     id: 0,
     sessionId: '',
+    rating: 0,
   };
 
   static propTypes = {
@@ -28,6 +29,7 @@ export default class MovieCard extends Component {
     genres: PropTypes.instanceOf(Array),
     id: PropTypes.number,
     sessionId: PropTypes.string,
+    rating: PropTypes.number,
   };
 
   movieDBService = new MovieDbService();
@@ -55,7 +57,7 @@ export default class MovieCard extends Component {
       veryHigh: '#66E900',
     };
 
-    const { description, posterUrl, title, votes, releaseDate, genres } = this.props;
+    const { description, posterUrl, title, votes, releaseDate, genres, rating } = this.props;
 
     const { loading, userRate } = this.state;
 
@@ -117,7 +119,7 @@ export default class MovieCard extends Component {
               allowHalf
               allowClear
               count="10"
-              value={userRate}
+              value={userRate || rating}
               defaultValue={0}
               className="stars"
               onChange={this.onChange}

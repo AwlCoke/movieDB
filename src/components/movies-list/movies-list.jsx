@@ -51,7 +51,8 @@ export default class MoviesList extends Component {
       });
     }
     if (tab === 'rated') {
-      this.movieDBService.getRatedMovies(sessionId).then((data) => {
+      this.movieDBService.getRatedMovies(sessionId, currentPage).then((data) => {
+        console.log(data);
         const moviesList = data[1];
         this.setState({ moviesList });
         getTotalResults(data[0]);

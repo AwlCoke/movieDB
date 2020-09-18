@@ -51,6 +51,8 @@ export default class App extends Component {
   onTabChange = (key) => {
     this.setState({
       tab: key,
+      currentPage: 1,
+      keyWord: '',
     });
   };
 

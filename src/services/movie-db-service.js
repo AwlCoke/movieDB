@@ -50,8 +50,8 @@ export default class MovieDbService {
     return [200, res.results.map(this.transformMovie)];
   };
 
-  getRatedMovies = async (sessionID) => {
-    const url = `${this.apiBase}/3/guest_session/${sessionID}/rated/movies?api_key=${this.apiKey}`;
+  getRatedMovies = async (sessionID, pageNumber) => {
+    const url = `${this.apiBase}/3/guest_session/${sessionID}/rated/movies?api_key=${this.apiKey}&page=${pageNumber}`;
     let res = await fetch(url);
     if (!res.ok) {
       throw new Error(`Could not rate`);
@@ -61,7 +61,6 @@ export default class MovieDbService {
   };
 
   rateMovie = async (movieID, sessionID, value) => {
-    console.log(sessionID);
     const url = `${this.apiBase}/3/movie/${movieID}/rating?api_key=${this.apiKey}&guest_session_id=${sessionID}`;
     try {
       const response = await fetch(url, {
@@ -82,6 +81,7 @@ export default class MovieDbService {
   transformMovie = (movie) => {
     const url = movie.poster_path ? `https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}` : null;
     const genres = movie.genre_ids;
+    const rating = movie.rating ? movie.rating : null;
     return {
       id: movie.id,
       title: movie.title,
@@ -90,6 +90,7 @@ export default class MovieDbService {
       votes: movie.vote_average,
       releaseDate: movie.release_date,
       genres,
+      rating,
     };
   };
 
