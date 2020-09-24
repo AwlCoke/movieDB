@@ -1,32 +1,99 @@
 @import '~antd/dist/antd.css';
 
-.movieCard {
-  width: 470px;
-  height: 300px;
-  padding: 0;
-  display: flex;
-  position: relative;
-  box-shadow: 0.4em 0.4em 1em lightgray;
+@media (max-width: 575px) {
+  .movieCard {
+    max-width: 320px;
+    height: 240px;
+    margin: 0 auto;
+  }
+
+  .ant-card {
+    position: relative;
+    width: 320px;
+    display: flex;
+    padding: 5px;
+  }
+
+  .ant-card-cover {
+    position: absolute;
+    height: fit-content;
+    width: fit-content;
+  }
+
+  .ant-card-body {
+    position: absolute;
+    display: grid;
+    flex-direction: column;
+    align-content: start;
+    width: 100%;
+    height: 100%;
+    padding-top: 10px;
+    padding-left: 90px;
+  }
+
+  .poster {
+    width: 70px;
+    margin: 10px;
+  }
+
+  .averageVote {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+
+  .description {
+    position: absolute;
+    width: 300px;
+    margin: 120px 10px auto;
+  }
+
+  .description::first-letter {
+    margin-left: 1em;
+  }
+
+  .stars {
+    position: absolute;
+    margin-top: 10px;
+    font-size: 1.1em;
+    width: fit-content;
+    bottom: 5px;
+  }
 }
 
-.averageVote {
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  right: 1em;
-  top: 1.5em;
+@media (min-width: 576px) {
+  .movieCard {
+    width: 470px;
+    height: 300px;
+    padding: 0;
+    display: flex;
+    position: relative;
+    box-shadow: 0.4em 0.4em 1em lightgray;
+  }
+  .poster {
+    width: 200px;
+  }
+  .averageVote {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 1em;
+    top: 1.5em;
+  }
+  .description {
+    margin-top: 5px;
+  }
+  .stars {
+    font-size: 1.1em;
+    position: absolute;
+    bottom: 15px;
+  }
+
+  .ant-card-meta-title {
+    width: 180px;
+  }
+
 }
 
-.ant-card-meta-title {
-  width: 180px;
-}
-
-.poster {
-  width: 200px;
-}
-
-.stars {
-  font-size: 1.1em;
-  position: absolute;
-  bottom: 15px;
-}

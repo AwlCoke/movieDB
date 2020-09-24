@@ -52,7 +52,6 @@ export default class MoviesList extends Component {
     }
     if (tab === 'rated') {
       this.movieDBService.getRatedMovies(sessionId, currentPage).then((data) => {
-        console.log(data);
         const moviesList = data[1];
         this.setState({ moviesList });
         getTotalResults(data[0]);
@@ -64,7 +63,7 @@ export default class MoviesList extends Component {
     const { sessionId } = this.props;
     return arr.map(({ id, ...props }) => {
       return (
-        <Col key={id} flex="left">
+        <Col key={id} flex="left" xm={{ span: 16 }}>
           <MovieCard {...props} id={id} sessionId={sessionId} />
         </Col>
       );

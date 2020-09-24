@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import SearchPanel from '../search-panel';
+import './header.css';
 
 const Header = ({ onSearch }) => {
   return (

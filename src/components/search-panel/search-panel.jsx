@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Input } from 'antd';
+import './search-panel.css';
 
 export default class SearchPanel extends Component {
   static defaultProps = {
@@ -38,7 +39,7 @@ export default class SearchPanel extends Component {
   render() {
     const { query } = this.state;
     return (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={this.onSubmit} className="search-panel">
         <Input placeholder="Type to search..." value={query} onChange={this.onChange} size="large" />
       </form>
     );

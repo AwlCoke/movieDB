@@ -90,14 +90,7 @@ export default class MovieCard extends Component {
 
     return (
       <>
-        <Card
-          loading={loading}
-          hoverable
-          bordered={false}
-          className="movieCard"
-          cover={poster}
-          bodyStyle={{ width: 270 }}
-        >
+        <Card loading={loading} hoverable bordered={false} className="movieCard" cover={poster}>
           <Meta title={title} className="title" />
 
           <Button
@@ -108,11 +101,15 @@ export default class MovieCard extends Component {
             {votes}
           </Button>
 
-          <div style={{ marginTop: 10, marginBottom: 10 }}>{date}</div>
+          <div className="releaseDate" style={{ marginTop: 10, marginBottom: 10 }}>
+            {date}
+          </div>
 
-          <MovieGenres genres={genres} loading={loading} />
+          <div className="genresBox">
+            <MovieGenres genres={genres} loading={loading} />
+          </div>
 
-          <div style={{ marginTop: 5 }}>{shortly}</div>
+          <div className="description">{shortly}</div>
 
           <form action="" method="post">
             <Rate

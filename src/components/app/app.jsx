@@ -26,15 +26,23 @@ export default class App extends Component {
 
   componentDidMount() {
     this.getGenres();
-    this.startSession();
+    if (sessionStorage.getItem('sessionId')) {
+      this.state.sessionId = sessionStorage.getItem('sessionId');
+    } else this.startSession();
   }
 
   startSession = async () => {
     const { service } = this.state;
     await service.startGuestSession().then((res) => {
-      this.setState({
-        sessionId: res.guest_session_id,
-      });
+      this.setState(
+        {
+          sessionId: res.guest_session_id,
+        },
+        () => {
+          const { sessionId } = this.state;
+          sessionStorage.setItem('sessionId', sessionId);
+        }
+      );
     });
   };
 
