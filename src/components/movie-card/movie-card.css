@@ -5,19 +5,24 @@
     max-width: 320px;
     height: 240px;
     margin: 0 auto;
+    box-shadow: 0.4em 0.4em 1em lightgray;
   }
 
   .ant-card {
     position: relative;
     width: 320px;
     display: flex;
-    padding: 5px;
   }
 
   .ant-card-cover {
     position: absolute;
     height: fit-content;
     width: fit-content;
+  }
+
+  .poster {
+    width: 70px;
+    margin: 10px;
   }
 
   .ant-card-body {
@@ -31,17 +36,12 @@
     padding-left: 90px;
   }
 
-  .poster {
-    width: 70px;
-    margin: 10px;
-  }
-
   .averageVote {
     width: 40px;
     height: 40px;
     position: absolute;
     top: 5px;
-    right: 5px;
+    right: 10px;
   }
 
   .description {
@@ -56,10 +56,10 @@
 
   .stars {
     position: absolute;
-    margin-top: 10px;
     font-size: 1.1em;
     width: fit-content;
     bottom: 5px;
+    right: 10px;
   }
 }
 
@@ -91,9 +91,7 @@
     bottom: 15px;
   }
 
+}
   .ant-card-meta-title {
     width: 180px;
   }
-
-}
-

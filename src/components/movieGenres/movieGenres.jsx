@@ -10,9 +10,9 @@ const MovieGenres = ({ genres, loading }) => {
       {(genresList) => {
         return genresList.length && !loading ? (
           <div>
-            {genres.map((genre) => {
+            {genres.map((genre, idx) => {
               return genresList.map((arr) => {
-                if (arr[0] === genre) {
+                if (arr[0] === genre && idx <= 3) {
                   return (
                     <Button
                       key={genre}
