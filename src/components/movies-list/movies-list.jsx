@@ -14,6 +14,7 @@ export default class MoviesList extends Component {
     getTotalResults: () => {},
     tab: '',
     sessionId: '',
+    loading: true,
   };
 
   static propTypes = {
@@ -22,6 +23,7 @@ export default class MoviesList extends Component {
     getTotalResults: PropTypes.func,
     tab: PropTypes.string,
     sessionId: PropTypes.string,
+    loading: PropTypes.bool,
   };
 
   movieDBService = new MovieDbService();
@@ -46,14 +48,14 @@ export default class MoviesList extends Component {
     if (tab === 'search') {
       this.movieDBService.getMovies(keyWord, currentPage).then((data) => {
         const moviesList = data[1];
-        this.setState({ moviesList });
+        this.setState({ moviesList }, () => getTotalResults(data[0]));
         getTotalResults(data[0]);
       });
     }
     if (tab === 'rated') {
       this.movieDBService.getRatedMovies(sessionId, currentPage).then((data) => {
         const moviesList = data[1];
-        this.setState({ moviesList });
+        this.setState({ moviesList }, () => getTotalResults(data[0]));
         getTotalResults(data[0]);
       });
     }
@@ -72,7 +74,8 @@ export default class MoviesList extends Component {
 
   render() {
     const { moviesList } = this.state;
-    if (!moviesList) return <Spinner />;
+    const { loading } = this.props;
+    if (!moviesList || loading) return <Spinner />;
 
     const movies = this.renderMovies(moviesList);
     return (

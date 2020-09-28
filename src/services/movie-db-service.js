@@ -62,6 +62,7 @@ export default class MovieDbService {
 
   rateMovie = async (movieID, sessionID, value) => {
     const url = `${this.apiBase}/3/movie/${movieID}/rating?api_key=${this.apiKey}&guest_session_id=${sessionID}`;
+    // eslint-disable-next-line no-useless-catch
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -71,10 +72,10 @@ export default class MovieDbService {
         },
       });
       const result = await response.json();
-      if (!result.ok) console.log(result.status_message);
-      else console.log('Успех:', JSON.stringify(result));
+      if (!result.ok) return result.status_message;
+      return result;
     } catch (error) {
-      console.error('Ошибка:', error);
+      throw error;
     }
   };
 

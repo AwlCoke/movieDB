@@ -1,0 +1,9 @@
+.error-indicator {
+    margin: 50px auto;
+}
+
+@media (max-width: 575px) {
+    .error-indicator {
+        width: 320px;
+    }
+}

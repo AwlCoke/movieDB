@@ -90,8 +90,7 @@
     position: absolute;
     bottom: 15px;
   }
-
 }
-  .ant-card-meta-title {
-    width: 180px;
-  }
+.ant-card-meta-title {
+  width: 180px;
+}

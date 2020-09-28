@@ -35,6 +35,7 @@ const MovieGenres = ({ genres, loading }) => {
     </ContextConsumer>
   );
 };
+export default MovieGenres;
 
 MovieGenres.defaultProps = {
   genres: [],
@@ -45,5 +46,3 @@ MovieGenres.propTypes = {
   genres: PropTypes.instanceOf(Array),
   loading: PropTypes.bool,
 };
-
-export default MovieGenres;

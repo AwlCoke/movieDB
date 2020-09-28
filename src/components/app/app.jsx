@@ -27,7 +27,9 @@ export default class App extends Component {
   componentDidMount() {
     this.getGenres();
     if (sessionStorage.getItem('sessionId')) {
-      this.state.sessionId = sessionStorage.getItem('sessionId');
+      this.setState({
+        sessionId: sessionStorage.getItem('sessionId'),
+      });
     } else this.startSession();
   }
 
@@ -59,6 +61,7 @@ export default class App extends Component {
   onTabChange = (key) => {
     this.setState({
       tab: key,
+      loading: true,
       currentPage: 1,
       keyWord: '',
     });
@@ -75,20 +78,22 @@ export default class App extends Component {
   handlerSearch = debounce(this.onSearch.bind(this), 500);
 
   getTotalResults = (totalResults) => {
-    this.setState({ totalResults });
+    this.setState({ totalResults, loading: false });
   };
 
   changePage = (pageNumber) => {
     this.setState({
+      loading: true,
       currentPage: pageNumber,
     });
-    window.scrollTo(0, 0);
   };
 
   render() {
     const { loading, genresList, keyWord, currentPage, totalResults, pageSize, tab, sessionId } = this.state;
 
-    const title = keyWord ? `Results for "${keyWord.toUpperCase()}"` : 'Top 200 Rated Movies';
+    if (!loading) {
+      window.scrollTo({ top: 0 });
+    }
 
     return (
       <ContextProvider value={genresList}>
@@ -102,15 +107,11 @@ export default class App extends Component {
             </PageHeader>
 
             {tab === 'search' && (
-              <>
-                <Row gutter={[16, 32]} justify="center">
-                  <Col span={16} style={{ padding: 0 }}>
-                    <Header onSearch={this.handlerSearch} />
-                  </Col>
-                </Row>
-
-                <h1 style={{ textAlign: 'center', color: 'darkgray', marginBottom: 20 }}>{title}</h1>
-              </>
+              <Row gutter={[16, 32]} justify="center">
+                <Col span={16} style={{ padding: 0 }}>
+                  <Header onSearch={this.handlerSearch} />
+                </Col>
+              </Row>
             )}
 
             <MoviesList
@@ -119,6 +120,7 @@ export default class App extends Component {
               currentPage={currentPage}
               sessionId={sessionId}
               getTotalResults={this.getTotalResults}
+              loading={loading}
             />
 
             <PaginationBox
