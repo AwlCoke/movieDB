@@ -53,12 +53,15 @@ export default class MoviesList extends Component {
     const func =
       tab === 'search'
         ? this.movieDBService.getMovies(keyWord, currentPage)
-        : this.movieDBService.getRatedMovies(sessionId, currentPage);
-    func.then((data) => {
-      const moviesList = data[1];
-      this.setState({ moviesList }, () => getTotalResults(data[0]));
-      getTotalResults(data[0]);
-    });
+        : sessionId && this.movieDBService.getRatedMovies(sessionId, currentPage);
+    return (
+      func &&
+      func.then((data) => {
+        const moviesList = data[1];
+        this.setState({ moviesList }, () => getTotalResults(data[0]));
+        getTotalResults(data[0]);
+      })
+    );
   }
 
   renderMovies(arr) {
@@ -74,12 +77,8 @@ export default class MoviesList extends Component {
 
   render() {
     const { moviesList } = this.state;
-    const { loading, tab } = this.props;
-    const keys = Object.keys(moviesList);
+    const { loading } = this.props;
 
-    if (tab === 'rated' && !keys.length) {
-      return <ErrorBoundry />;
-    }
     if (!moviesList || loading) return <Spinner />;
 
     const movies = this.renderMovies(moviesList);
