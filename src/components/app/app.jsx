@@ -37,9 +37,21 @@ class App extends Component {
   };
 
   componentDidMount() {
+    // const { loadItem } = this.props;
+    // const sessionId = loadItem('sessionId');
+    this.getGenres();
+    this.getSessionId();
+    // if (sessionId) {
+    //   this.setState({
+    //     sessionId,
+    //     loading: false,
+    //   });
+    // } else this.startSession();
+  }
+
+  getSessionId() {
     const { loadItem } = this.props;
     const sessionId = loadItem('sessionId');
-    this.getGenres();
     if (sessionId) {
       this.setState({
         sessionId,
