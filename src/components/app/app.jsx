@@ -125,16 +125,14 @@ class App extends Component {
               </Row>
             )}
 
-            {sessionId && (
-              <MoviesList
-                tab={tab}
-                keyWord={keyWord}
-                currentPage={currentPage}
-                sessionId={sessionId}
-                loading={loading}
-                getTotalResults={this.getTotalResults}
-              />
-            )}
+            <MoviesList
+              tab={tab}
+              keyWord={keyWord}
+              currentPage={currentPage}
+              sessionId={sessionId}
+              loading={loading}
+              getTotalResults={this.getTotalResults}
+            />
 
             <PaginationBox
               currentPage={currentPage}
