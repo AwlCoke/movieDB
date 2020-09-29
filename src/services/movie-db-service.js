@@ -54,7 +54,8 @@ export default class MovieDbService {
     const url = `${this.apiBase}/3/guest_session/${sessionID}/rated/movies?api_key=${this.apiKey}&page=${pageNumber}`;
     let res = await fetch(url);
     if (!res.ok) {
-      throw new Error(`Could not rate`);
+      console.log(res);
+      throw new Error(`Could not get rated movies`);
     }
     res = await res.json();
     return [res.total_results, res.results.map(this.transformMovie)];

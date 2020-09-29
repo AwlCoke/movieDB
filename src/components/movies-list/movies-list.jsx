@@ -45,20 +45,15 @@ export default class MoviesList extends Component {
 
   updateList() {
     const { keyWord, currentPage, getTotalResults, tab, sessionId } = this.props;
-    if (tab === 'search') {
-      this.movieDBService.getMovies(keyWord, currentPage).then((data) => {
-        const moviesList = data[1];
-        this.setState({ moviesList }, () => getTotalResults(data[0]));
-        getTotalResults(data[0]);
-      });
-    }
-    if (tab === 'rated') {
-      this.movieDBService.getRatedMovies(sessionId, currentPage).then((data) => {
-        const moviesList = data[1];
-        this.setState({ moviesList }, () => getTotalResults(data[0]));
-        getTotalResults(data[0]);
-      });
-    }
+    const func =
+      tab === 'search'
+        ? this.movieDBService.getMovies(keyWord, currentPage)
+        : this.movieDBService.getRatedMovies(sessionId, currentPage);
+    func.then((data) => {
+      const moviesList = data[1];
+      this.setState({ moviesList }, () => getTotalResults(data[0]));
+      getTotalResults(data[0]);
+    });
   }
 
   renderMovies(arr) {
