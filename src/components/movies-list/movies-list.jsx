@@ -70,6 +70,7 @@ export default class MoviesList extends Component {
   render() {
     const { moviesList } = this.state;
     const { loading } = this.props;
+
     if (!moviesList || loading) return <Spinner />;
 
     const movies = this.renderMovies(moviesList);

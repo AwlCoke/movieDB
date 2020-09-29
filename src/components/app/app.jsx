@@ -41,7 +41,10 @@ class App extends Component {
     const sessionId = loadItem('sessionId');
     this.getGenres();
     if (sessionId) {
-      this.setState({ sessionId });
+      this.setState({
+        sessionId,
+        loading: false,
+      });
     } else this.startSession();
   }
 
@@ -58,7 +61,6 @@ class App extends Component {
     await service.getAllGenres().then((res) => {
       this.setState({
         genresList: res,
-        loading: false,
       });
     });
   };
@@ -66,9 +68,9 @@ class App extends Component {
   onTabChange = (key) => {
     this.setState({
       tab: key,
-      loading: true,
       currentPage: 1,
       keyWord: '',
+      loading: true,
     });
   };
 
@@ -119,14 +121,16 @@ class App extends Component {
               </Row>
             )}
 
-            <MoviesList
-              tab={tab}
-              keyWord={keyWord}
-              currentPage={currentPage}
-              sessionId={sessionId}
-              getTotalResults={this.getTotalResults}
-              loading={loading}
-            />
+            {sessionId && (
+              <MoviesList
+                tab={tab}
+                keyWord={keyWord}
+                currentPage={currentPage}
+                sessionId={sessionId}
+                loading={loading}
+                getTotalResults={this.getTotalResults}
+              />
+            )}
 
             <PaginationBox
               currentPage={currentPage}
