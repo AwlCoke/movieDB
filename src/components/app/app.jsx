@@ -39,6 +39,9 @@ class App extends Component {
   componentDidMount() {
     this.getGenres();
     this.getSessionId();
+    this.setState({
+      loading: false,
+    });
   }
 
   getSessionId() {
@@ -47,7 +50,7 @@ class App extends Component {
     if (sessionId) {
       this.setState({
         sessionId,
-        loading: false,
+        // loading: false,
       });
     } else this.startSession();
   }
