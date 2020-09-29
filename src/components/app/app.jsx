@@ -50,7 +50,6 @@ class App extends Component {
     if (sessionId) {
       this.setState({
         sessionId,
-        // loading: false,
       });
     } else this.startSession();
   }
@@ -85,6 +84,7 @@ class App extends Component {
     this.setState({
       keyWord: value,
       currentPage: 1,
+      loading: true,
     });
   };
 

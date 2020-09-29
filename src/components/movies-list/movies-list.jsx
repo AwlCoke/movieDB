@@ -74,8 +74,9 @@ export default class MoviesList extends Component {
 
   render() {
     const { moviesList } = this.state;
-    const { loading } = this.props;
+    const { loading, tab } = this.props;
 
+    if (tab === 'rated' && !moviesList) return <ErrorBoundry />;
     if (!moviesList || loading) return <Spinner />;
 
     const movies = this.renderMovies(moviesList);
