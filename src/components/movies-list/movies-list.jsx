@@ -37,8 +37,13 @@ export default class MoviesList extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { keyWord, currentPage, tab } = this.props;
-    if (keyWord !== prevProps.keyWord || currentPage !== prevProps.currentPage || tab !== prevProps.tab) {
+    const { keyWord, currentPage, tab, sessionId } = this.props;
+    if (
+      keyWord !== prevProps.keyWord ||
+      currentPage !== prevProps.currentPage ||
+      tab !== prevProps.tab ||
+      sessionId !== prevProps.sessionId
+    ) {
       this.updateList();
     }
   }

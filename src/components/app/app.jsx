@@ -37,16 +37,8 @@ class App extends Component {
   };
 
   componentDidMount() {
-    // const { loadItem } = this.props;
-    // const sessionId = loadItem('sessionId');
     this.getGenres();
     this.getSessionId();
-    // if (sessionId) {
-    //   this.setState({
-    //     sessionId,
-    //     loading: false,
-    //   });
-    // } else this.startSession();
   }
 
   getSessionId() {
@@ -97,7 +89,7 @@ class App extends Component {
   handlerSearch = debounce(this.onSearch.bind(this), 500);
 
   getTotalResults = (totalResults) => {
-    this.setState({ totalResults, loading: false });
+    this.setState({ totalResults });
   };
 
   changePage = (pageNumber) => {
