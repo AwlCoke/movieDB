@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import './app.css';
 import { Col, Layout, PageHeader, Row, Tabs } from 'antd';
@@ -8,10 +9,21 @@ import PaginationBox from '../pagination-box';
 import ErrorBoundry from '../error-boundry';
 import MovieDbService from '../../services/movie-db-service';
 import { ContextProvider } from '../context';
+import withStorage from '../hoc';
 
 const { TabPane } = Tabs;
 
-export default class App extends Component {
+class App extends Component {
+  static defaultProps = {
+    loadItem: () => {},
+    saveItem: () => {},
+  };
+
+  static propTypes = {
+    loadItem: PropTypes.func,
+    saveItem: PropTypes.func,
+  };
+
   state = {
     loading: true,
     genresList: [],
@@ -25,26 +37,19 @@ export default class App extends Component {
   };
 
   componentDidMount() {
+    const { loadItem } = this.props;
+    const sessionId = loadItem('sessionId');
     this.getGenres();
-    if (sessionStorage.getItem('sessionId')) {
-      this.setState({
-        sessionId: sessionStorage.getItem('sessionId'),
-      });
+    if (sessionId) {
+      this.setState({ sessionId });
     } else this.startSession();
   }
 
   startSession = async () => {
     const { service } = this.state;
     await service.startGuestSession().then((res) => {
-      this.setState(
-        {
-          sessionId: res.guest_session_id,
-        },
-        () => {
-          const { sessionId } = this.state;
-          sessionStorage.setItem('sessionId', sessionId);
-        }
-      );
+      const { saveItem } = this.props;
+      saveItem('sessionId', res.guest_session_id);
     });
   };
 
@@ -136,3 +141,5 @@ export default class App extends Component {
     );
   }
 }
+
+export default withStorage(App);
