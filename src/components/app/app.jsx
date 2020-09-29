@@ -92,7 +92,7 @@ class App extends Component {
   handlerSearch = debounce(this.onSearch.bind(this), 500);
 
   getTotalResults = (totalResults) => {
-    this.setState({ totalResults });
+    this.setState({ totalResults, loading: false });
   };
 
   changePage = (pageNumber) => {
