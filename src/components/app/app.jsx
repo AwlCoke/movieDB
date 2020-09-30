@@ -51,14 +51,20 @@ class App extends Component {
       this.setState({
         sessionId,
       });
-    } else this.startSession();
+    } else {
+      this.startSession();
+      this.getSessionId();
+    }
   }
 
   startSession = async () => {
     const { service } = this.state;
     await service.startGuestSession().then((res) => {
-      const { saveItem } = this.props;
+      const { saveItem, loadItem } = this.props;
       saveItem('sessionId', res.guest_session_id);
+      this.setState({
+        sessionId: loadItem('sessionId'),
+      });
     });
   };
 
