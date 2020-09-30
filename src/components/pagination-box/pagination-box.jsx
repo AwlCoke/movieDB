@@ -1,11 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Pagination } from 'antd';
+import { Button, Pagination } from 'antd';
 
 const PaginationBox = ({ currentPage, totalResults, pageSize, changePage, loading }) => {
   const onChange = (page) => {
     changePage(page);
   };
+
+  if (!totalResults && !loading) {
+    return (
+      <Button type="primary" style={{ margin: '20px auto' }}>
+        There are no results
+      </Button>
+    );
+  }
 
   return (
     !loading && (

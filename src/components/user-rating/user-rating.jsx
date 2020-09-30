@@ -2,7 +2,6 @@ import React from 'react';
 import { Rate } from 'antd';
 import PropTypes from 'prop-types';
 import MovieDbService from '../../services/movie-db-service';
-import ErrorBoundry from '../error-boundry';
 
 const UserRating = (props) => {
   const { id, sessionId, userRate, rating, getUserRating } = props;
@@ -14,19 +13,17 @@ const UserRating = (props) => {
   };
 
   return (
-    <ErrorBoundry>
-      <form action="" method="post">
-        <Rate
-          allowHalf
-          allowClear
-          count="10"
-          value={userRate || rating}
-          defaultValue={0}
-          className="stars"
-          onChange={onChange}
-        />
-      </form>
-    </ErrorBoundry>
+    <form action="" method="post">
+      <Rate
+        allowHalf
+        allowClear
+        count="10"
+        value={userRate || rating}
+        defaultValue={0}
+        className="stars"
+        onChange={onChange}
+      />
+    </form>
   );
 };
 
