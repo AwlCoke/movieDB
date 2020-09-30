@@ -44,7 +44,7 @@ class App extends Component {
     });
   }
 
-  getSessionId() {
+  getSessionId = async () => {
     const { loadItem } = this.props;
     const sessionId = loadItem('sessionId');
     if (sessionId) {
@@ -52,10 +52,10 @@ class App extends Component {
         sessionId,
       });
     } else {
-      this.startSession();
+      await this.startSession();
       this.getSessionId();
     }
-  }
+  };
 
   startSession = async () => {
     const { service } = this.state;
