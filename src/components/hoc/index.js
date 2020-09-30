@@ -1,3 +1,5 @@
 import withStorage from './with-storage';
+import withService from './with-service';
+import compose from './compose';
 
-export default withStorage;
+export { withStorage, withService, compose };

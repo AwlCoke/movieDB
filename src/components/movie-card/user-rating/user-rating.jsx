@@ -1,7 +1,7 @@
 import React from 'react';
 import { Rate } from 'antd';
 import PropTypes from 'prop-types';
-import MovieDbService from '../../services/movie-db-service';
+import MovieDbService from '../../../services/movie-db-service';
 
 const UserRating = (props) => {
   const { id, sessionId, userRate, rating, getUserRating } = props;

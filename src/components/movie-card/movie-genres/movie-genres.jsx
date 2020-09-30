@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
-import { ContextConsumer } from '../context';
-import Spinner from '../spinner';
+import { ContextConsumer } from '../../context';
+import Spinner from '../../spinner';
 
 const MovieGenres = ({ genres, loading }) => {
   return (

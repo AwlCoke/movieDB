@@ -8,8 +8,8 @@ import Header from '../header';
 import PaginationBox from '../pagination-box';
 import ErrorBoundry from '../error-boundry';
 import MovieDbService from '../../services/movie-db-service';
-import { ContextProvider } from '../context';
-import withStorage from '../hoc';
+import { ContextProvider, ServiceContextProvider } from '../context';
+import { withStorage } from '../hoc';
 
 const { TabPane } = Tabs;
 
@@ -109,50 +109,57 @@ class App extends Component {
   };
 
   render() {
-    const { loading, genresList, keyWord, currentPage, totalResults, pageSize, tab, sessionId } = this.state;
+    const { service, loading, genresList, keyWord, currentPage, totalResults, pageSize, tab, sessionId } = this.state;
 
     if (!loading) {
       window.scrollTo({ top: 0 });
     }
 
     return (
-      <ContextProvider value={genresList}>
-        <ErrorBoundry>
-          <Layout className="content-wrapper" style={{ backgroundColor: 'white' }}>
-            <PageHeader title="" className="content-header">
-              <Tabs size="large" onChange={this.onTabChange}>
-                <TabPane tab="Search" key="search" />
-                <TabPane tab="Rated" key="rated" />
-              </Tabs>
-            </PageHeader>
+      <ServiceContextProvider value={service}>
+        <ContextProvider value={genresList}>
+          <ErrorBoundry>
+            <Layout className="content-wrapper" style={{ backgroundColor: 'white' }}>
+              <PageHeader title="" className="content-header">
+                <Tabs
+                  size="large"
+                  defaultActiveKey="search"
+                  onChange={this.onTabChange}
+                  tabBarExtraContent={{ left: <div style={{ width: 32, visibility: 'hidden' }} /> }}
+                >
+                  <TabPane tab="Search" key="search" />
+                  <TabPane tab="Rated" key="rated" />
+                </Tabs>
+              </PageHeader>
 
-            {tab === 'search' && (
-              <Row gutter={[16, 32]} justify="center">
-                <Col span={16} style={{ padding: 0 }}>
-                  <Header onSearch={this.handlerSearch} />
-                </Col>
-              </Row>
-            )}
+              {tab === 'search' && (
+                <Row gutter={[16, 32]} justify="center">
+                  <Col span={16} style={{ padding: 0 }}>
+                    <Header onSearch={this.handlerSearch} />
+                  </Col>
+                </Row>
+              )}
 
-            <MoviesList
-              tab={tab}
-              keyWord={keyWord}
-              currentPage={currentPage}
-              sessionId={sessionId}
-              loading={loading}
-              getTotalResults={this.getTotalResults}
-            />
+              <MoviesList
+                tab={tab}
+                keyWord={keyWord}
+                currentPage={currentPage}
+                sessionId={sessionId}
+                loading={loading}
+                getTotalResults={this.getTotalResults}
+              />
 
-            <PaginationBox
-              currentPage={currentPage}
-              totalResults={totalResults}
-              pageSize={pageSize}
-              changePage={this.changePage}
-              loading={loading}
-            />
-          </Layout>
-        </ErrorBoundry>
-      </ContextProvider>
+              <PaginationBox
+                currentPage={currentPage}
+                totalResults={totalResults}
+                pageSize={pageSize}
+                changePage={this.changePage}
+                loading={loading}
+              />
+            </Layout>
+          </ErrorBoundry>
+        </ContextProvider>
+      </ServiceContextProvider>
     );
   }
 }

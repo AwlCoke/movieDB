@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Empty, Skeleton } from 'antd';
 import './movie-card.css';
-import MovieGenres from '../movie-genres';
-import ReleaseDate from '../release-date';
-import AverageVote from '../average-vote';
-import Description from '../description';
-import UserRating from '../user-rating';
+import MovieGenres from './movie-genres';
+import ReleaseDate from './release-date';
+import AverageVote from './average-vote';
+import Description from './description';
+import UserRating from './user-rating';
 import ErrorBoundry from '../error-boundry';
 
 const MovieCard = (props) => {
