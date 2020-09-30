@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Card, Empty, Skeleton } from 'antd';
 import './movie-card.css';
 import MovieGenres from '../movie-genres';
-import MovieDbService from '../../services/movie-db-service';
 import ReleaseDate from '../release-date';
 import AverageVote from '../average-vote';
 import Description from '../description';
@@ -11,21 +10,24 @@ import UserRating from '../user-rating';
 import ErrorBoundry from '../error-boundry';
 
 const MovieCard = (props) => {
-  const movieDBService = new MovieDbService();
+  let initialValue = true;
+  let initialRating = 0;
 
-  const [userRate, setUserRate] = useState(0);
+  const [userRate, setUserRate] = useState(initialRating);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(initialValue);
 
   const { sessionId, id, description, posterUrl, title, votes, releaseDate, genres, rating } = props;
 
   useEffect(() => {
-    setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    initialValue = false;
+    setLoading(initialValue);
   }, []);
 
-  const onChange = (value) => {
-    setUserRate(value);
-    movieDBService.rateMovie(id, sessionId, value);
+  const getUserRating = (value) => {
+    initialRating = value;
+    setUserRate(initialRating);
   };
 
   const poster =
@@ -46,7 +48,7 @@ const MovieCard = (props) => {
           <ReleaseDate releaseDate={releaseDate} />
           <MovieGenres genres={genres} loading={loading} />
           <Description description={description} count={genres.length} />
-          <UserRating userRate={userRate} rating={rating} onChange={onChange} />
+          <UserRating getUserRating={getUserRating} userRate={userRate} rating={rating} id={id} sessionId={sessionId} />
         </Skeleton>
       </Card>
     </ErrorBoundry>

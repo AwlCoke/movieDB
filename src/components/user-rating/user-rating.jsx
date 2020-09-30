@@ -1,9 +1,16 @@
 import React from 'react';
 import { Rate } from 'antd';
 import PropTypes from 'prop-types';
+import MovieDbService from '../../services/movie-db-service';
 
 const UserRating = (props) => {
-  const { userRate, rating, onChange } = props;
+  const { id, sessionId, userRate, rating, getUserRating } = props;
+  const movieDBService = new MovieDbService();
+
+  const onChange = (value) => {
+    movieDBService.rateMovie(id, sessionId, value);
+    getUserRating(value);
+  };
 
   return (
     <form action="" method="post">
@@ -23,13 +30,17 @@ const UserRating = (props) => {
 UserRating.defaultProps = {
   userRate: 0,
   rating: 0,
-  onChange: () => {},
+  id: 0,
+  sessionId: '',
+  getUserRating: () => {},
 };
 
 UserRating.propTypes = {
   userRate: PropTypes.number,
   rating: PropTypes.number,
-  onChange: PropTypes.func,
+  id: PropTypes.number,
+  sessionId: PropTypes.string,
+  getUserRating: PropTypes.func,
 };
 
 export default UserRating;
