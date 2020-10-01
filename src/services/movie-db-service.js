@@ -4,80 +4,124 @@ export default class MovieDbService {
   apiKey = '5c49318cf30b5f1de695245fd0a13af9';
 
   startGuestSession = async () => {
-    let res = await fetch(`${this.apiBase}/3/authentication/guest_session/new?api_key=${this.apiKey}`);
-    if (!res.ok) {
-      throw new Error();
+    try {
+      let res = await fetch(`${this.apiBase}/3/authentication/guest_session/new?api_key=${this.apiKey}`);
+      if (!res.ok) {
+        throw new Error();
+      }
+      res = await res.json();
+      return res;
+    } catch (error) {
+      throw new Error(error);
     }
-    res = await res.json();
-    return res;
   };
 
   getResource = async (url, pageNumber) => {
-    let res = await fetch(`${this.apiBase}/3/search/movie?api_key=${this.apiKey}&query=${url}&page=${pageNumber}`);
-
-    if (!res.ok) {
-      throw new Error(`Could not fetch ${url}, received ${res.status}`);
+    try {
+      let res = await fetch(`${this.apiBase}/3/search/movie?api_key=${this.apiKey}&query=${url}&page=${pageNumber}`);
+      if (!res.ok) {
+        throw new Error(`Could not fetch ${url}, received ${res.status}`);
+      }
+      res = await res.json();
+      return res;
+    } catch (error) {
+      throw new Error('ERROR IS ', error);
     }
-    res = await res.json();
-    return res;
   };
 
   getAllGenres = async () => {
-    let res = await fetch(`${this.apiBase}/3/genre/movie/list?api_key=${this.apiKey}`);
-    if (!res.ok) {
-      throw new Error(`Could not fetch, received ${res.status}`);
+    try {
+      let res = await fetch(`${this.apiBase}/3/genre/movie/list?api_key=${this.apiKey}`);
+      if (!res.ok) {
+        throw new Error(`Could not fetch, received ${res.status}`);
+      }
+      res = await res.json();
+      return res.genres.map(this.transformGenres);
+    } catch (error) {
+      throw new Error(error);
     }
-    res = await res.json();
-    return res.genres.map(this.transformGenres);
   };
 
   getTopRatedMovies = async (pageNumber) => {
-    let res = await fetch(`${this.apiBase}/3/movie/top_rated?api_key=${this.apiKey}&page=${pageNumber}`);
-    if (!res.ok) {
-      throw new Error(`Could not fetch ${this.apiBase}, received ${res.status}`);
+    try {
+      let res = await fetch(`${this.apiBase}/3/movie/top_rated?api_key=${this.apiKey}&page=${pageNumber}`);
+      if (!res.ok) {
+        throw new Error(`Could not fetch ${this.apiBase}, received ${res.status}`);
+      }
+      res = await res.json();
+      return res;
+    } catch (error) {
+      throw new Error(error);
     }
-    res = await res.json();
-    return res;
   };
 
-  getMovies = async (keyword, pageNumber) => {
-    let res;
-    if (keyword) {
-      res = await this.getResource(`/${keyword}/`, pageNumber);
-      return [res.total_results, res.results.map(this.transformMovie)];
+  getMovies = async (keyword, pageNumber, sessionId) => {
+    try {
+      const rated = await this.getRatedMovies(sessionId);
+      let res;
+      let totalResults;
+      if (keyword) {
+        res = await this.getResource(`/${keyword}/`, pageNumber);
+        totalResults = res.total_results;
+      } else {
+        res = await this.getTopRatedMovies(pageNumber);
+        totalResults = 200;
+      }
+      let movies = res.results.map(this.transformMovie);
+      if (rated) {
+        movies = this.checkRated(rated[1], movies);
+      }
+      return [totalResults, movies];
+    } catch (error) {
+      throw new Error(error);
     }
-    res = await this.getTopRatedMovies(pageNumber);
-    return [200, res.results.map(this.transformMovie)];
   };
 
   getRatedMovies = async (sessionID, pageNumber) => {
-    if (sessionID) {
-      const url = `${this.apiBase}/3/guest_session/${sessionID}/rated/movies?api_key=${this.apiKey}&page=${pageNumber}`;
-      let res = await fetch(url);
-      if (!res.ok) {
-        throw new Error(`Could not get rated movies`);
+    try {
+      const toPage = pageNumber ? `&page=${pageNumber}` : '';
+      if (sessionID) {
+        const url = `${this.apiBase}/3/guest_session/${sessionID}/rated/movies?api_key=${this.apiKey}${toPage}`;
+        let res = await fetch(url);
+        if (!res.ok) {
+          throw new Error(`Could not get rated movies`);
+        }
+        res = await res.json();
+        return [res.total_results, res.results.map(this.transformMovie)];
       }
-      res = await res.json();
-      return [res.total_results, res.results.map(this.transformMovie)];
+      return null;
+    } catch (error) {
+      throw new Error(error);
     }
-    return null;
+  };
+
+  checkRated = (ratedMovies, movies) => {
+    const result = movies.map((movie) => {
+      // eslint-disable-next-line guard-for-in
+      for (const i in ratedMovies) {
+        const rm = ratedMovies[i];
+        if (rm.id === movie.id) {
+          // eslint-disable-next-line no-param-reassign
+          movie.rating = rm.rating;
+        }
+      }
+      return movie;
+    });
+    return result;
   };
 
   rateMovie = async (movieID, sessionID, value) => {
     const url = `${this.apiBase}/3/movie/${movieID}/rating?api_key=${this.apiKey}&guest_session_id=${sessionID}`;
     try {
-      const response = await fetch(url, {
+      return await fetch(url, {
         method: 'POST',
         body: JSON.stringify({ value }),
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      const result = await response.json();
-      if (!result.ok) console.log(result.status_message);
-      else console.log('Успех:', JSON.stringify(result));
     } catch (error) {
-      console.error('Ошибка:', error);
+      throw new Error('ERROR IS ', error);
     }
   };
 

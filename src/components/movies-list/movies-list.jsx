@@ -52,7 +52,7 @@ export default class MoviesList extends Component {
     const { keyWord, currentPage, getTotalResults, tab, sessionId } = this.props;
     const func =
       tab === 'search'
-        ? this.movieDBService.getMovies(keyWord, currentPage)
+        ? this.movieDBService.getMovies(keyWord, currentPage, sessionId)
         : sessionId && this.movieDBService.getRatedMovies(sessionId, currentPage);
     return (
       func &&
