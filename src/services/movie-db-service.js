@@ -16,17 +16,17 @@ export default class MovieDbService {
     }
   };
 
-  getResource = async (url, pageNumber) => {
-    try {
-      let res = await fetch(`${this.apiBase}/3/search/movie?api_key=${this.apiKey}&query=${url}&page=${pageNumber}`);
-      if (!res.ok) {
-        throw new Error(`Could not fetch ${url}, received ${res.status}`);
-      }
-      res = await res.json();
-      return res;
-    } catch (error) {
-      throw new Error('ERROR IS ', error);
-    }
+  getResource = (query, pageNumber) => {
+    const URL = `${this.apiBase}/3/search/movie?api_key=${this.apiKey}&query=${query}&page=${pageNumber}`;
+    return fetch(URL)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error('Something went wrong');
+      })
+      .then((data) => data)
+      .catch(() => Promise.reject());
   };
 
   getAllGenres = async () => {
@@ -56,25 +56,33 @@ export default class MovieDbService {
   };
 
   getMovies = async (keyword, pageNumber, sessionId) => {
+    let rated;
     try {
-      const rated = await this.getRatedMovies(sessionId);
-      let res;
-      let totalResults;
-      if (keyword) {
-        res = await this.getResource(`/${keyword}/`, pageNumber);
-        totalResults = res.total_results;
-      } else {
-        res = await this.getTopRatedMovies(pageNumber);
-        totalResults = 200;
-      }
-      let movies = res.results.map(this.transformMovie);
-      if (rated) {
-        movies = this.checkRated(rated[1], movies);
-      }
-      return [totalResults, movies];
+      rated = await this.getRatedMovies(sessionId);
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
+    let totalResults;
+    let movies;
+    if (keyword) {
+      await this.getResource(`/${keyword}/`, pageNumber)
+        .then((res) => {
+          totalResults = res.total_results;
+          movies = res.results.map(this.transformMovie);
+        })
+        .catch(() => Promise.reject());
+    } else {
+      await this.getTopRatedMovies(pageNumber)
+        .then((res) => {
+          totalResults = 200;
+          movies = res.results.map(this.transformMovie);
+        })
+        .catch(() => Promise.reject());
+    }
+    if (rated) {
+      movies = this.checkRated(rated[1], movies);
+    }
+    return [totalResults, movies];
   };
 
   getRatedMovies = async (sessionID, pageNumber) => {

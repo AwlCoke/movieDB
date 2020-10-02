@@ -44,6 +44,12 @@ class App extends Component {
     });
   }
 
+  componentDidCatch() {
+    this.setState({
+      loading: false,
+    });
+  }
+
   getSessionId = async () => {
     const { loadItem } = this.props;
     const sessionId = loadItem('sessionId');

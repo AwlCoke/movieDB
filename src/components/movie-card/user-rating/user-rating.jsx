@@ -1,15 +1,14 @@
 import React from 'react';
 import { Rate } from 'antd';
 import PropTypes from 'prop-types';
-import MovieDbService from '../../../services/movie-db-service';
+import { compose, withService } from '../../hoc';
 
 const UserRating = (props) => {
-  const { id, sessionId, userRate, rating, getUserRating } = props;
-  const movieDBService = new MovieDbService();
+  const { id, sessionId, userRate, rating, getUserRating, toRate } = props;
 
   const onChange = (value) => {
     getUserRating(value);
-    return sessionId && movieDBService.rateMovie(id, sessionId, value);
+    return sessionId && toRate(id, sessionId, value);
   };
 
   return (
@@ -27,7 +26,14 @@ const UserRating = (props) => {
   );
 };
 
+const mapMethodsToProps = (service) => {
+  return {
+    toRate: service.rateMovie,
+  };
+};
+
 UserRating.defaultProps = {
+  toRate: {},
   userRate: 0,
   rating: 0,
   id: 0,
@@ -36,6 +42,7 @@ UserRating.defaultProps = {
 };
 
 UserRating.propTypes = {
+  toRate: PropTypes.instanceOf(Object),
   userRate: PropTypes.number,
   rating: PropTypes.number,
   id: PropTypes.number,
@@ -43,4 +50,4 @@ UserRating.propTypes = {
   getUserRating: PropTypes.func,
 };
 
-export default UserRating;
+export default compose(withService(mapMethodsToProps)(UserRating));

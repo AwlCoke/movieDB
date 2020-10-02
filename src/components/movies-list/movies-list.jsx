@@ -1,32 +1,43 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Col, Row } from 'antd';
-import MovieDbService from '../../services/movie-db-service';
 import './movies-list.css';
 import MovieCard from '../movie-card';
 import Spinner from '../spinner';
 import ErrorBoundry from '../error-boundry';
+import { compose, withService } from '../hoc';
 
-export default class MoviesList extends Component {
+const mapMethodsToProps = (service) => {
+  return {
+    getMovies: service.getMovies,
+    getRated: service.getRatedMovies,
+  };
+};
+
+class MoviesList extends Component {
   static defaultProps = {
+    service: {},
     keyWord: '',
     currentPage: 1,
     getTotalResults: () => {},
     tab: '',
     sessionId: '',
     loading: true,
+    getMovies: {},
+    getRated: {},
   };
 
   static propTypes = {
+    service: PropTypes.instanceOf(Object),
     keyWord: PropTypes.string,
     currentPage: PropTypes.number,
     getTotalResults: PropTypes.func,
     tab: PropTypes.string,
     sessionId: PropTypes.string,
     loading: PropTypes.bool,
+    getMovies: PropTypes.instanceOf(Object),
+    getRated: PropTypes.instanceOf(Object),
   };
-
-  movieDBService = new MovieDbService();
 
   state = {
     moviesList: null,
@@ -37,6 +48,7 @@ export default class MoviesList extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    if (!navigator.onLine) throw new Error('Poor Connection');
     const { keyWord, currentPage, tab, sessionId } = this.props;
     if (
       keyWord !== prevProps.keyWord ||
@@ -49,19 +61,15 @@ export default class MoviesList extends Component {
   }
 
   updateList() {
-    const { keyWord, currentPage, getTotalResults, tab, sessionId } = this.props;
+    const { getMovies, getRated, keyWord, currentPage, getTotalResults, tab, sessionId } = this.props;
+
     const func =
-      tab === 'search'
-        ? this.movieDBService.getMovies(keyWord, currentPage, sessionId)
-        : sessionId && this.movieDBService.getRatedMovies(sessionId, currentPage);
-    return (
-      func &&
-      func.then((data) => {
-        const moviesList = data[1];
-        this.setState({ moviesList }, () => getTotalResults(data[0]));
-        getTotalResults(data[0]);
-      })
-    );
+      tab === 'search' ? getMovies(keyWord, currentPage, sessionId) : sessionId && getRated(sessionId, currentPage);
+    return func.then((data) => {
+      const moviesList = data[1];
+      this.setState({ moviesList }, () => getTotalResults(data[0]));
+      getTotalResults(data[0]);
+    });
   }
 
   renderMovies(arr) {
@@ -92,3 +100,5 @@ export default class MoviesList extends Component {
     );
   }
 }
+
+export default compose(withService(mapMethodsToProps)(MoviesList));
